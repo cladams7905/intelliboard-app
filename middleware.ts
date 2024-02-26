@@ -5,6 +5,7 @@ import type { Database } from './db/types/supabase.ts'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
+  
   const supabase = createMiddlewareClient<Database>({ req, res })
 
   const {
@@ -25,5 +26,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/account'],
+  matcher: ['/', '/account', '/((?!_next/static|_next/image|favicon.ico).*)'],
 }
