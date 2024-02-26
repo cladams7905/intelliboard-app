@@ -1,6 +1,6 @@
 'use client';
 
-import type { Database } from '@db/types/supabase';
+import type { Database } from '@db/supabase';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';

@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 import type { NextRequest } from 'next/server'
-import type { Database } from '@db/types/supabase.ts'
+import type { Database } from '@db/supabase'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)

@@ -1,11 +1,10 @@
-import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-//import Navbar from "@components/layout/Navbar";
+import Navbar from "@components/layout/Navbar";
 //import Footer from "@components/layout/Footer";
 import { Suspense } from "react";
 
 import type { Metadata } from "next";
-import "./globals.css";
+import "@styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Intelliboard",
@@ -22,7 +21,7 @@ export default function RootLayout({
       <body>
         <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
         <Suspense fallback="...">
-          {/*<Navbar />*/}
+          <Navbar />
         </Suspense>
         <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
           {children}
