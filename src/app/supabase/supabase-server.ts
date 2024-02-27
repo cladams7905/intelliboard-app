@@ -31,11 +31,11 @@ export async function getSession() {
 export async function getUserDetails() {
   const supabase = createServerSupabaseClient();
   try {
-    const { data: userDetails } = await supabase
+    const { data } = await supabase
       .from('users')
       .select('*')
       .single();
-    return userDetails;
+    return data;
   } catch (error) {
     console.error('Error:', error);
     return null;

@@ -1,16 +1,35 @@
+"use client";
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { createServerSupabaseClient, getUserDetails } from '@app/supabase/supabase-server';
 import useScroll from "@hooks/use-scroll";
 import UserDropdown from './UserDropdown';
-import { User } from '@customTypes/models';
 
 import s from './Navbar.module.css';
 
-export default async function Navbar() {
-  const supabase = createServerSupabaseClient();
-  const {data: { user }} = await supabase.auth.getUser();
+export default function Navbar() {
+  const [user, setUser] = useState<any>(null);
+  const [userDetails, setUserDetails] = useState<any>(null);
   const scrolled = useScroll(50);
-  const userDetails = await getUserDetails();
+  
+
+  useEffect(() => {
+    async function fetchUserDetails() {
+      const supabase = createServerSupabaseClient();
+      const {data: { user }, error} = await supabase.auth.getUser()
+
+      if (error) {
+        console.error('Error fetching user data:', error);
+        return;
+      } 
+      setUser(user);
+
+      const userDetails = await getUserDetails();
+      setUserDetails(userDetails);
+    }
+    fetchUserDetails();
+  });
 
   return (
     <>
@@ -32,7 +51,7 @@ export default async function Navbar() {
             ) : (
               <button
                 className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
-                onClick={() => setShowSignInModal(true)}
+                /*onClick={() => setShowSignInModal(true)}*/
               >
                 Sign In
               </button>
