@@ -1,3 +1,5 @@
+"use server";
+
 import { Database } from '@db/supabase';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';

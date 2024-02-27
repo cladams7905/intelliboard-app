@@ -12,11 +12,7 @@ type SupabaseContext = {
 
 const Context = createContext<SupabaseContext | undefined>(undefined);
 
-export default function SupabaseProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function SupabaseProvider({children}: {children: React.ReactNode;}) {
   const [supabase] = useState(() => createPagesBrowserClient());
   const router = useRouter();
 
@@ -34,7 +30,7 @@ export default function SupabaseProvider({
 
   return (
     <Context.Provider value={{ supabase }}>
-      <>{children}</>
+      {children}
     </Context.Provider>
   );
 }
