@@ -1,39 +1,21 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { createServerSupabaseClient, getUserDetails } from '@app/supabase/supabase-server';
 import useScroll from "@hooks/use-scroll";
+import useSignInModal from "@components/layout/SignInModal";
 import UserDropdown from './UserDropdown';
+import { User } from '@utils/types/models';
 
 import s from './Navbar.module.css';
 
-export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
-  const [userDetails, setUserDetails] = useState<any>(null);
+export default function Navbar({ user }: { user: User | null }) {
+  const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
-  
-
-  useEffect(() => {
-    async function fetchUserDetails() {
-      const supabase = createServerSupabaseClient();
-      const {data: { user }, error} = await supabase.auth.getUser()
-
-      if (error) {
-        console.error('Error fetching user data:', error);
-        return;
-      } 
-      setUser(user);
-
-      const userDetails = await getUserDetails();
-      setUserDetails(userDetails);
-    }
-    fetchUserDetails();
-  });
 
   return (
     <>
-      {/*<SignInModal />*/}
+      <SignInModal />
       <div
         className={`fixed top-0 w-full flex justify-center z-30 transition-all
         ${ scrolled
@@ -47,11 +29,11 @@ export default function Navbar() {
           </Link>
           <div>
             {user ? (
-              <UserDropdown user={userDetails} />
+              <UserDropdown user={user} />
             ) : (
               <button
                 className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
-                /*onClick={() => setShowSignInModal(true)}*/
+                onClick={() => setShowSignInModal(true)}
               >
                 Sign In
               </button>
