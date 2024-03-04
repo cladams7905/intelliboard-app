@@ -1,15 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { createServerSupabaseClient, getUserDetails } from '@app/supabase/supabase-server';
-import useScroll from "@hooks/use-scroll";
-import useSignInModal from "@components/layout/SignInModal";
+import useScroll from "lib/hooks/use-scroll";
+import useSignInModal from "@/components/layout/SignInModal";
 import UserDropdown from './UserDropdown';
-import { User } from '@utils/types/models';
+import { Session } from '@supabase/supabase-js';
 
 import s from './Navbar.module.css';
 
-export default function Navbar({ user }: { user: User | null }) {
+export default function Navbar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
 
@@ -28,8 +27,8 @@ export default function Navbar({ user }: { user: User | null }) {
               {/*<Logo/>*/}
           </Link>
           <div>
-            {user ? (
-              <UserDropdown user={user} />
+            {session ? (
+              <UserDropdown session={session} />
             ) : (
               <button
                 className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"

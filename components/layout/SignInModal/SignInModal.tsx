@@ -1,4 +1,4 @@
-import Modal from "@components/shared/Modal";
+import Modal from "@/components/shared/Modal";
 import { signIn } from "next-auth/react";
 import {
   useState,
@@ -7,8 +7,8 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import LoadingDots from "@components/shared/LoadingDots";
-import Google from "@components/shared/icons/google";
+import LoadingDots from "@/components/shared/LoadingDots";
+import Google from "@/components/shared/icons/google";
 import Image from "next/image";
 
 const SignInModal = ({

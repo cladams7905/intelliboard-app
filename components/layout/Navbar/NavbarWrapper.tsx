@@ -1,13 +1,7 @@
-import { User } from '@utils/types/models'
-import { createServerSupabaseClient, getUserDetails } from '@app/supabase/supabase-server';
-import Navbar from './Navbar';
+import readUserSession from "@/lib/actions/readUserSession";
+import Navbar from "./Navbar";
 
-export default async function NavbarWrapper() {
-    const supabase = createServerSupabaseClient();
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
-    const userDetails = await getUserDetails();
-
-    return <Navbar user={userDetails}/>;
+export default async function NavbarWapper() {
+    const {data: {session}} = await readUserSession();
+    return <Navbar session={session} />;
 }
