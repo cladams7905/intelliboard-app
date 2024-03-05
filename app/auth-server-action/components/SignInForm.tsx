@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { signInWithEmailAndPassword } from "../actions";
 
 import {
 	Form,
@@ -10,11 +11,12 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
+} from "@/components/shared/form";
+import { Input } from "@/components/shared/input";
+import { toast } from "@/components/shared/use-toast";
+import { Button } from "@/components/shared/button";
 import { cn } from "@/lib/utils";
+import { useTransition } from "react";
 
 const FormSchema = z.object({
 	email: z.string().email(),
@@ -24,6 +26,8 @@ const FormSchema = z.object({
 });
 
 export default function SignInForm() {
+	const [isPending, startTransition] = useTransition();
+
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -33,16 +37,35 @@ export default function SignInForm() {
 	});
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-		toast({
-			title: "You submitted the following values:",
-			description: (
-				<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-					<code className="text-white">
-						{JSON.stringify(data, null, 2)}
-					</code>
-				</pre>
-			),
-		});
+
+		startTransition(async () => {
+			const result = await signInWithEmailAndPassword(data);
+			const {error} = JSON.parse(result);
+
+			if (error?.message) {
+				toast({
+					title: "Error:",
+					description: (
+						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+							<code className="text-white">
+								{error.message}
+							</code>
+						</pre>
+					),
+				});
+			} else {
+				toast({
+					title: "You submitted the following values:",
+					description: (
+						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+							<code className="text-white">
+								Successfully logged in!
+							</code>
+						</pre>
+					),
+				});
+			}
+		})
 	}
 
 	return (
@@ -90,7 +113,7 @@ export default function SignInForm() {
 				/>
 				<Button type="submit" className="w-full flex gap-2">
 					SignIn
-					<AiOutlineLoading3Quarters className={cn("animate-spin")} />
+					<AiOutlineLoading3Quarters className={cn("animate-spin", {"hidden": !isPending})} />
 				</Button>
 			</form>
 		</Form>

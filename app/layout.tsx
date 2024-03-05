@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/react";
 //import Footer from "@components/layout/Footer";
 import { Suspense } from "react";
 import "./globals.css";
+import { Toaster } from "@/components/shared/toaster";
 
 import type { Metadata } from "next";
 import NavbarWapper from "@/components/layout/Navbar/NavbarWrapper";
@@ -24,7 +25,7 @@ export default function RootLayout({
             <NavbarWapper/>
           </Suspense>
           <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
-            {children}
+            {children} <Toaster />
           </main>
           {/*<Footer/>*/}
           <Analytics/>
