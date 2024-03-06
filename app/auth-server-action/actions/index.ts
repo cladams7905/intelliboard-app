@@ -31,5 +31,5 @@ export async function signInWithEmailAndPassword(data: {
 export async function signOut() {
 	const supabase = await createSupabaseServerClient();
     await supabase.auth.signOut();
-    redirect("/auth-server-action");
+    redirect("/");
 }

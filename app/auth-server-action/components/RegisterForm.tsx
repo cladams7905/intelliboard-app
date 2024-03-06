@@ -18,6 +18,7 @@ import { Button } from "@/components/shared/button";
 import { cn } from "@/lib/utils";
 import { signUpWithEmailAndPassword } from "../actions";
 import { useTransition } from "react";
+import { AuthFormProps } from "./AuthForm";
 
 const FormSchema = z
 	.object({
@@ -34,7 +35,7 @@ const FormSchema = z
 		path: ["confirm"],
 	});
 
-export default function RegisterForm() {
+export default function RegisterForm({closeSignInModal} : {closeSignInModal: () => void}) {
 	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -54,22 +55,24 @@ export default function RegisterForm() {
 
 			if (error?.message) {
 				toast({
-					title: "Error:",
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-							<code className="text-white">
+							<code className="text-red-400">
 								{error.message}
 							</code>
 						</pre>
 					),
 				});
 			} else {
+				closeSignInModal();
 				toast({
-					title: "You submitted the following values:",
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-							<code className="text-white">
+							<code className="text-green-400">
 								Successfully registered!
+								<div className="text-white">
+									Please check {data.email} <br/> to confirm your registration.
+								</div>
 							</code>
 						</pre>
 					),
@@ -82,7 +85,7 @@ export default function RegisterForm() {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full space-y-6"
+				className="w-full space-y-6 my-6"
 			>
 				<FormField
 					control={form.control}
@@ -135,12 +138,11 @@ export default function RegisterForm() {
 									onChange={field.onChange}
 								/>
 							</FormControl>
-
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex gap-2">
+				<Button type="submit" className="w-full flex gap-2" style={{ marginTop: '2.5rem' }}>
 					Register
 					<AiOutlineLoading3Quarters className={cn("animate-spin", {"hidden": !isPending})} />
 				</Button>

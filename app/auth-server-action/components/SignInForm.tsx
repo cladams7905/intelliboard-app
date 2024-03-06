@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { signInWithEmailAndPassword } from "../actions";
-
+import useSignInModal from "@/components/layout/SignInModal";
 import {
 	Form,
 	FormControl,
@@ -17,6 +17,7 @@ import { toast } from "@/components/shared/use-toast";
 import { Button } from "@/components/shared/button";
 import { cn } from "@/lib/utils";
 import { useTransition } from "react";
+import { AuthFormProps } from "./AuthForm";
 
 const FormSchema = z.object({
 	email: z.string().email(),
@@ -25,8 +26,9 @@ const FormSchema = z.object({
 	}),
 });
 
-export default function SignInForm() {
+export default function SignInForm({closeSignInModal} : {closeSignInModal: () => void})  {
 	const [isPending, startTransition] = useTransition();
+	const { setShowSignInModal } = useSignInModal();
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -44,26 +46,16 @@ export default function SignInForm() {
 
 			if (error?.message) {
 				toast({
-					title: "Error:",
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-							<code className="text-white">
+							<code className="text-red-400">
 								{error.message}
 							</code>
 						</pre>
 					),
 				});
 			} else {
-				toast({
-					title: "You submitted the following values:",
-					description: (
-						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-							<code className="text-white">
-								Successfully logged in!
-							</code>
-						</pre>
-					),
-				});
+				closeSignInModal();
 			}
 		})
 	}
@@ -72,7 +64,7 @@ export default function SignInForm() {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="w-full space-y-6"
+				className="w-full space-y-6 my-6"
 			>
 				<FormField
 					control={form.control}
@@ -111,8 +103,8 @@ export default function SignInForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex gap-2">
-					SignIn
+				<Button type="submit" className="w-full flex" style={{ marginTop: '2.5rem' }}>
+					Sign In
 					<AiOutlineLoading3Quarters className={cn("animate-spin", {"hidden": !isPending})} />
 				</Button>
 			</form>

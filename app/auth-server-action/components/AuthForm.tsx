@@ -5,22 +5,26 @@ import SignInForm from "./SignInForm";
 import RegisterForm from "./RegisterForm";
 import OAuthForm from "./OAuthForm";
 
-export function AuthForm() {
+export interface AuthFormProps {
+	closeSignInModal: () => void;
+}
+
+export const AuthForm: React.FC<AuthFormProps> = ({closeSignInModal}) => {
 	return (
 		<div className="w-full space-y-5">
-			<Tabs defaultValue="signin" className="w-full">
+			<Tabs defaultValue="signin" className="w-full items-start">
 				<TabsList className="grid w-full grid-cols-2">
 					<TabsTrigger value="signin">SignIn</TabsTrigger>
 					<TabsTrigger value="register">Register</TabsTrigger>
 				</TabsList>
 				<TabsContent value="signin">
-					<SignInForm />
+					<SignInForm closeSignInModal={closeSignInModal}/>
 				</TabsContent>
 				<TabsContent value="register">
-					<RegisterForm />
+					<RegisterForm closeSignInModal={closeSignInModal}/>
 				</TabsContent>
 			</Tabs>
-			<OAuthForm />
+			{/* <OAuthForm /> */}
 		</div>
 	);
 }

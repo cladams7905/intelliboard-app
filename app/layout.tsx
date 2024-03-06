@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
+        <div className="fixed h-screen w-full bg-gray-100" />
           <Suspense fallback="...">
             <NavbarWapper/>
           </Suspense>
