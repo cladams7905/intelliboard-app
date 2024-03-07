@@ -1,9 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { signInWithEmailAndPassword } from "../actions";
-import useSignInModal from "@/components/layout/SignInModal";
 import {
 	Form,
 	FormControl,
@@ -15,9 +13,8 @@ import {
 import { Input } from "@/components/shared/input";
 import { toast } from "@/components/shared/use-toast";
 import { Button } from "@/components/shared/button";
-import { cn } from "@/lib/utils";
 import { useTransition } from "react";
-import { AuthFormProps } from "./AuthForm";
+import LoadingDots from "@/components/shared/LoadingDots";
 
 const FormSchema = z.object({
 	email: z.string().email(),
@@ -28,7 +25,6 @@ const FormSchema = z.object({
 
 export default function SignInForm({closeSignInModal} : {closeSignInModal: () => void})  {
 	const [isPending, startTransition] = useTransition();
-	const { setShowSignInModal } = useSignInModal();
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -39,7 +35,6 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 	});
 
 	function onSubmit(data: z.infer<typeof FormSchema>) {
-
 		startTransition(async () => {
 			const result = await signInWithEmailAndPassword(data);
 			const {error} = JSON.parse(result);
@@ -65,6 +60,7 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="w-full space-y-6 my-6"
+				autoComplete="on"
 			>
 				<FormField
 					control={form.control}
@@ -104,8 +100,11 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 					)}
 				/>
 				<Button type="submit" className="w-full flex" style={{ marginTop: '2.5rem' }}>
-					Sign In
-					<AiOutlineLoading3Quarters className={cn("animate-spin", {"hidden": !isPending})} />
+					{isPending ? (
+						<LoadingDots color="#FFFFFF" />
+					) : (
+						'Sign In'
+					)}
 				</Button>
 			</form>
 		</Form>

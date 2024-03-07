@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import LoadingDots from "@/components/shared/LoadingDots";
 
 import {
 	Form,
@@ -15,10 +15,8 @@ import {
 import { Input } from "@/components/shared/input";
 import { toast } from "@/components/shared/use-toast";
 import { Button } from "@/components/shared/button";
-import { cn } from "@/lib/utils";
-import { signUpWithEmailAndPassword } from "../actions";
+import { signInWithEmailAndPassword, signUpWithEmailAndPassword } from "../actions";
 import { useTransition } from "react";
-import { AuthFormProps } from "./AuthForm";
 
 const FormSchema = z
 	.object({
@@ -64,18 +62,22 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 					),
 				});
 			} else {
-				closeSignInModal();
-				toast({
-					description: (
-						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-							<code className="text-green-400">
-								Successfully registered!
-								<div className="text-white">
-									Please check {data.email} <br/> to confirm your registration.
-								</div>
-							</code>
-						</pre>
-					),
+				await signInWithEmailAndPassword(data).then(() => {
+					closeSignInModal();
+					toast({
+						description: (
+							<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+								<code className="text-green-400">
+									Successfully registered!
+									<div className="text-white">
+										Please check {data.email}
+										<br/>
+										to confirm your registration.
+									</div>
+								</code>
+							</pre>
+						),
+					});
 				});
 			}
 		});
@@ -86,6 +88,7 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="w-full space-y-6 my-6"
+				autoComplete="on"
 			>
 				<FormField
 					control={form.control}
@@ -143,8 +146,11 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 					)}
 				/>
 				<Button type="submit" className="w-full flex gap-2" style={{ marginTop: '2.5rem' }}>
-					Register
-					<AiOutlineLoading3Quarters className={cn("animate-spin", {"hidden": !isPending})} />
+					{isPending ? (
+						<LoadingDots color="#FFFFFF" />
+					) : (
+						'Register'
+					)}
 				</Button>
 			</form>
 		</Form>
