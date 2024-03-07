@@ -47,9 +47,9 @@ export default function UserDropdown({ session }: { session: Session }) {
       >
         <button
           onClick={() => setOpenPopover(!openPopover)}
-          className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-gray-300 transition-all duration-75 focus:outline-none active:scale-95 sm:h-9 sm:w-9"
+          className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-200 transition-all duration-75 active:scale-95 sm:h-9 sm:w-9"
         >
-          <Icon icon="ph:user-light" width={28} height={28} />
+          <Icon icon="mdi:user" width={28} height={28} style={{ color: '#545454' }} />
         </button>
       </Popover>
     </div>

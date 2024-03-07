@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-//import Footer from "@components/layout/Footer";
+import Footer from "@/components/layout/Footer";
 import { Suspense } from "react";
 import "./globals.css";
 import { Toaster } from "@/components/shared/toaster";
@@ -20,14 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="fixed h-screen w-full bg-gray-100" />
+        <div className="fixed h-screen w-full" />
           <Suspense fallback="...">
             <NavbarWapper/>
           </Suspense>
           <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
             {children} <Toaster />
+            <Footer/>
           </main>
-          {/*<Footer/>*/}
           <Analytics/>
       </body>
     </html>
