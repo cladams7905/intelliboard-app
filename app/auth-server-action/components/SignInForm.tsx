@@ -44,7 +44,7 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 							<code className="text-red-400">
-								{error.message}
+								{'Error: ' + error.message}
 							</code>
 						</pre>
 					),
@@ -99,7 +99,7 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex" style={{ marginTop: '2.5rem' }}>
+				<Button type="submit" className="w-full flex bg-secondary" style={{ marginTop: '2.5rem' }}>
 					{isPending ? (
 						<LoadingDots color="#FFFFFF" />
 					) : (

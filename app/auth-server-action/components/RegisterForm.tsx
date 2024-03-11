@@ -56,7 +56,7 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 					description: (
 						<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
 							<code className="text-red-400">
-								{error.message}
+								{'Error: ' + error.message}
 							</code>
 						</pre>
 					),
@@ -145,7 +145,7 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex gap-2" style={{ marginTop: '2.5rem' }}>
+				<Button type="submit" className="w-full flex gap-2 bg-secondary" style={{ marginTop: '2.5rem' }}>
 					{isPending ? (
 						<LoadingDots color="#FFFFFF" />
 					) : (

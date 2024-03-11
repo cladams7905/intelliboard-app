@@ -4,6 +4,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useState } from "react";
 import LoadingDots from "@/components/shared/LoadingDots";
 import Google from "@/components/shared/icons/google";
+import { GET } from "../callback/route";
 
 export default function OAuthForm() {
 	const [signInClicked, setSignInClicked] = useState(false);
@@ -23,7 +24,7 @@ export default function OAuthForm() {
 				},
 			redirectTo: `${location.origin}/auth-server-action/callback`
 			},
-		});
+		})
 	}
 	
 	return (
