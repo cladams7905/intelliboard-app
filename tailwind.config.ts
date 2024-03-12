@@ -69,6 +69,10 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      height: {
+        'screen-custom-150': 'calc(100vh - 150px)',
+        'screen-custom-65': 'calc(100vh - 64px)',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
