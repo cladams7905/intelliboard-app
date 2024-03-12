@@ -8,8 +8,8 @@ import type { Metadata } from "next";
 import NavbarWapper from "@/components/layout/Navbar/NavbarWrapper";
 
 export const metadata: Metadata = {
-  title: "Intelliboard",
-  description: "GPT-powered language learning app",
+  title: "Studibee",
+  description: "AI text reader for learning foreign languages",
 };
 
 export default function RootLayout({
