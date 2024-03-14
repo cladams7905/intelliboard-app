@@ -8,11 +8,13 @@ import useMediaQuery from "lib/hooks/use-media-query";
 export default function Modal({
   children,
   className,
+  blur,
   showModal,
   setShowModal,
 }: {
   children: React.ReactNode;
   className?: string;
+  blur?: boolean,
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -21,7 +23,7 @@ export default function Modal({
   if (isMobile) {
     return (
       <Drawer.Root open={showModal} onOpenChange={setShowModal}>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-gray-100 bg-opacity-10 backdrop-blur" />
+        <Drawer.Overlay className={`fixed inset-0 z-40 bg-gray-100 bg-opacity-10 ${blur ? 'backdrop-blur': ''}`} />
         <Drawer.Portal>
           <Drawer.Content
             className="fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-gray-200 bg-white">
@@ -41,12 +43,12 @@ export default function Modal({
         <Dialog.Overlay
           // for detecting when there's an active opened modal
           id="modal-backdrop"
-          className="animate-fade-in fixed inset-0 z-40 bg-gray-100 bg-opacity-50 backdrop-blur-md"
+          className={`animate-fade-in fixed inset-0 z-40 bg-gray-100 bg-opacity-50 ${blur || blur == null ? 'backdrop-blur': ''}`}
         />
         <Dialog.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
-          className="animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden border border-gray-200 bg-white p-0 shadow-xl md:rounded-2xl">
+          className="animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-screen-lg overflow-hidden border border-gray-200 bg-white p-0 shadow-xl md:rounded-2xl">
           {children}
         </Dialog.Content>
       </Dialog.Portal>

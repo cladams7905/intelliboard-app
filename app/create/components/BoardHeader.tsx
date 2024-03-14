@@ -2,15 +2,11 @@
 
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 import Tooltip from "@/components/shared/tooltip";
-import useScroll from "@/lib/hooks/use-scroll";
 
 export default function BoardHeader() {
 
-    const scrolled = useScroll(10);
-
     return (
-    <div className={`absolute flex flex-row justify-between items-center h-[100px] py-6 px-8 mx-10 
-    ${scrolled ? 'backdrop-blur-none' : 'backdrop-blur-sm'} transition-all`}
+    <div className={`absolute flex flex-row justify-between items-center h-[100px] py-6 px-8 mx-10`}
     style={{width: 'calc(91.6667% - 150px)'}}>
         <Tooltip alignment="top" content="Save">
             <Icon 

@@ -1,11 +1,12 @@
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/layout/Footer";
 import { Suspense } from "react";
-import "./globals.css";
 import { Toaster } from "@/components/shared/toaster";
-
 import type { Metadata } from "next";
 import NavbarWapper from "@/components/layout/Navbar/NavbarWrapper";
+import "./globals.css";
+import { inter, righteous } from "@/public/fonts";
+import cx from "classnames";
 
 export const metadata: Metadata = {
   title: "Studibee",
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${cx(inter.variable, righteous.variable)}`}>
         <div className="fixed h-screen w-full bg-gray-50" />
           <Suspense fallback="...">
             <NavbarWapper/>
