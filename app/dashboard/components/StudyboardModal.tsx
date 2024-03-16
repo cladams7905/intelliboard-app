@@ -6,7 +6,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import NewStudyboardTile from "./NewStudyboardTile";
+import AddStudyboardTile from "./AddStudyboardTile";
 
 
 const StudyboardModal = ({
@@ -30,7 +30,7 @@ const StudyboardModal = ({
           </div>
           <div className="flex flex-col items-center justify-start flex-wrap gap-4 w-1/3 border-l border-gray-300">
           <div className="text-xl text-secondary">Create a new studyboard</div>
-            <NewStudyboardTile/>
+            <AddStudyboardTile/>
           </div>
         </div>
       </div>

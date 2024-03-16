@@ -1,14 +1,16 @@
 "use client";
 
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
-import { createNewStudyboard } from "../actions";
+import { createStudyboard } from "../actions";
 import { TablesInsert } from "@/types/supabase";
 import { toast } from "@/components/shared/use-toast";
+import { useRouter } from "next/navigation";
 
-export default function NewStudyboardTile() {
+export default function AddStudyboardTile() {
+    const router = useRouter();
 
     const studyboard : TablesInsert<'Studyboards'> = {
-        title: "Test",
+        title: "Broccoli",
         language: "chinese",
         difficulty: "2+",
         tags: ["funny", "happy"],
@@ -19,7 +21,10 @@ export default function NewStudyboardTile() {
     return(
         <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border border-gray-300 hover:cursor-pointer hover:bg-gray-100 hover:scale-105 transition-all"
         style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}
-        onClick={() => {onNewStudyboardTileSubmit(studyboard)}}>
+        onClick={() => {
+            onAddStudyboardTileSubmit(studyboard);
+            router.refresh();
+        }}>
             <Icon 
             icon="mingcute:add-fill" 
             width={32} 
@@ -29,8 +34,8 @@ export default function NewStudyboardTile() {
     );
 }
 
-async function onNewStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'>) {
-    const result = await createNewStudyboard(studyboard);
+async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'>) {
+    const result = await createStudyboard(studyboard);
     const { error } = JSON.parse(result);
     if (!error) {
         toast({
