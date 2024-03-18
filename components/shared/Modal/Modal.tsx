@@ -9,12 +9,14 @@ export default function Modal({
   children,
   className,
   blur,
+  width,
   showModal,
   setShowModal,
 }: {
   children: React.ReactNode;
   className?: string;
   blur?: boolean,
+  width?: string,
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -48,7 +50,7 @@ export default function Modal({
         <Dialog.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
-          className="animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-screen-lg overflow-hidden border border-gray-200 bg-white p-0 shadow-xl md:rounded-2xl">
+          className={`animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full ${width ? width : 'max-w-md'} overflow-hidden border border-gray-200 bg-white p-0 shadow-xl md:rounded-2xl`}>
           {children}
         </Dialog.Content>
       </Dialog.Portal>

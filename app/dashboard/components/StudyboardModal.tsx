@@ -18,7 +18,7 @@ const StudyboardModal = ({
 }) => {
 
   return (
-    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false}>
+    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="max-w-screen-lg">
       <div className="w-full overflow-hidden shadow-xl md:rounded-2xl md:border md:border-gray-200 p-8 max-h-[400px]">
         <div className="flex flex-row justify-center items-start">
           <div className="flex flex-col items-center justify-center w-2/3">
