@@ -15,7 +15,7 @@ export default function StudyboardGallery({userStudyboards} : {userStudyboards: 
     const router = useRouter();
 
     useEffect(() => {
-        const channel = supabase.channel('studyboard changes').on(
+        const channel = supabase.channel('studyboard gallery changes').on(
         'postgres_changes', {
             event: '*',
             schema: 'public',
