@@ -21,7 +21,7 @@ const StudyboardModal = ({
   studyboards: Tables<"Studyboards">[];
 }) => {
   return (
-    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width={"w-4/5"}>
+    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-4/5">
       <div className="flex flex-row w-full shadow-xl md:rounded-2xl md:border md:border-gray-200 p-8">
           <div className="flex flex-col items-center justify-center w-2/3 border-r border-gray-300">
             <div className="text-xl text-secondary">Select a studyboard</div>
