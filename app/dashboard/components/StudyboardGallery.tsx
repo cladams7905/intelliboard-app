@@ -30,7 +30,7 @@ const StudyboardGallery = ({studyboards} : {studyboards: Tables<"Studyboards">[]
     ).subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      channel.unsubscribe();
     }
   }, [supabase, router]);
 
