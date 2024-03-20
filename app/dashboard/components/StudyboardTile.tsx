@@ -7,7 +7,7 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
     style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}>
       <div className="flex-col items-start max-w-48">
           <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50">
-            <TileOptions/>
+            <TileOptions studyboard={studyboard}/>
           </div>
           <div className="flex flex-col flex-wrap gap-2 items-center justify-center p-2">
             <div className="text-md break-words">{studyboard.title}</div>

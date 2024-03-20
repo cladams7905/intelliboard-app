@@ -5,7 +5,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import BoardHeader from "./components/BoardHeader";
 import { getStudyboardsByUserId } from "../dashboard/actions";
 
-export default async function page() {
+export default async function EditPage() {
 	const {data} = await readUserSession();
 
 	if (!data.session) {
