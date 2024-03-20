@@ -25,7 +25,7 @@ const StudyboardModal = ({
       <div className="flex flex-row w-full shadow-xl md:rounded-2xl md:border md:border-gray-200 p-8">
           <div className="flex flex-col items-center justify-center w-2/3 border-r border-gray-300">
             <div className="text-xl text-secondary">Select a studyboard</div>
-            <div className={`flex flex-row flex-wrap gap-4 my-4 p-2 items-center overflow-y-scroll`}>
+            <div className={`flex flex-row flex-wrap gap-4 my-4 p-2 items-center overflow-y-scroll max-h-[440px]`}>
               <StudyboardGallery studyboards={studyboards}/>
             </div>
           </div>

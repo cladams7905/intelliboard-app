@@ -3,6 +3,7 @@ import readUserSession from "@/lib/actions/readUserSession";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import BoardHeader from "./components/BoardHeader";
+import { getStudyboardsByUserId } from "../dashboard/actions";
 
 export default async function page() {
 	const {data} = await readUserSession();
@@ -11,10 +12,12 @@ export default async function page() {
 		return redirect('/')
 	}
 
+	const userStudyboards = await getStudyboardsByUserId(data?.session.user.id) || [];
+
 	return (
 		<>
 		<div className="flex flex-row justify-between pr-20 w-full gap-6 overflow-hidden fixed top-[64px]">
-			<Sidebar/>
+			<Sidebar studyboards={userStudyboards}/>
 			<div className="w-11/12 h-screen-custom-150 bg-white mt-8">
 				<div className='flex flex-col align-center border border-gray-200 rounded-sm h-full'>
 					<BoardHeader/>
