@@ -6,6 +6,7 @@ import UserDropdown from './UserDropdown';
 import { Session } from '@supabase/supabase-js';
 import { Button } from "@/components/shared/button";
 import { Logo } from "@/components/shared/icons/logo";
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 import s from './Navbar.module.css';
 
@@ -36,6 +37,12 @@ export default function Navbar({ session }: { session: Session | null }) {
           </div>
         </div>
       </div>
+      <ProgressBar
+          height="4px"
+          color="hsl(var(--accent))"
+          options={{ showSpinner: true }}
+          shallowRouting
+        />
     </>
   );
 }
