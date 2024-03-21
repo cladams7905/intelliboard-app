@@ -11,11 +11,13 @@ export default async function EditPage({ params }: { params: { studyboardId: num
 
 	if (!data.session) {
 		return redirect('/')
+	} 	
+	if (!studyboardId) {
+		return redirect('/dashboard')
 	}
 
 	const userStudyboards = await getStudyboardsByUserId(data?.session.user.id) || [];
 	const studyboard = await getStudyboardsById(studyboardId)
-
 
 	return (
 		<>

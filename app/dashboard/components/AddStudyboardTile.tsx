@@ -8,15 +8,15 @@ import { useRouter } from "next/navigation";
 
 export default function AddStudyboardTile() {
     const router = useRouter();
-
     const studyboard : TablesInsert<'Studyboards'> = {};
 
     return(
         <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border border-gray-300 hover:cursor-pointer hover:bg-gray-100 hover:scale-105 transition-all"
         style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}
         onClick={() => {
-            onAddStudyboardTileSubmit(studyboard);
-            router.refresh();
+            onAddStudyboardTileSubmit(studyboard).then((result) => {
+                router.push(`/edit/${result.id}`);
+            })
         }}>
             <Icon 
             icon="mingcute:add-fill" 
@@ -28,8 +28,9 @@ export default function AddStudyboardTile() {
 }
 
 async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'>) {
-    const result = await createStudyboard(studyboard);
-    const { error } = JSON.parse(result);
+    const result = JSON.parse(await createStudyboard(studyboard));
+    console.log(result)
+    const { error } = result;
     if (!error) {
         toast({
             description: (
@@ -47,4 +48,5 @@ async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'
             ),
         })
     }
+    return result;
 }

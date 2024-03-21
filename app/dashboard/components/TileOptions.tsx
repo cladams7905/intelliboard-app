@@ -8,9 +8,11 @@ import { Tables } from "@/types/supabase";
 import { deleteStudyboardById } from "../actions";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/shared/use-toast";
+import { useUrl } from 'nextjs-current-url';
 
 export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboards">}) {
   const [openPopover, setOpenPopover] = useState(false);
+  const { pathname } = useUrl() ?? {};
   const router = useRouter();
 
   return (
@@ -28,11 +30,14 @@ export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboar
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-100"
               onClick={(e) => {
+                if (pathname == `/edit/${studyboard.id}`) {
+                  router.push('/dashboard')
+                }
                 deleteStudyboardById(studyboard.id).then(() => {
                   toast({
                     description: (
-                      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 text-white">
-                        Successfully deleted &quot;{studyboard.title}&quot;
+                      <pre className="mt-2 rounded-md bg-slate-950 p-4 text-white">
+                        Successfully deleted &quot;{studyboard.title ? studyboard.title : "Untitled Project"}&quot;
                       </pre>
                     ),
                   })
