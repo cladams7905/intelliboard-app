@@ -26,7 +26,8 @@ export default function Sidebar({studyboards} : {studyboards: Tables<"Studyboard
                     </Tooltip>
                 </Link>
                 <Tooltip alignment="right" content="Select studyboard">
-                    <Button type="submit" variant={"ghost"} className="w-full mb-6 hover:scale-105 transition-all">
+                    <Button type="submit" variant={"ghost"} className="w-full mb-6 hover:scale-105 transition-all"
+                    onClick={() => setShowStudyboardModal(true)}>
                         <Icon 
                             icon="mdi:collections-bookmark-outline" 
                             width={26} 
