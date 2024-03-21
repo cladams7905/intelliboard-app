@@ -9,15 +9,8 @@ import { useRouter } from "next/navigation";
 export default function AddStudyboardTile() {
     const router = useRouter();
 
-    const studyboard : TablesInsert<'Studyboards'> = {
-        title: "Broccoli",
-        language: "chinese",
-        difficulty: "2+",
-        tags: ["funny", "happy"],
-        content: {
-            "contentBody": "Hello hello"
-        },
-    }
+    const studyboard : TablesInsert<'Studyboards'> = {};
+
     return(
         <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border border-gray-300 hover:cursor-pointer hover:bg-gray-100 hover:scale-105 transition-all"
         style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}

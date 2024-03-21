@@ -27,7 +27,7 @@ export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboar
             </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              onClick={() => {
+              onClick={(e) => {
                 deleteStudyboardById(studyboard.id).then(() => {
                   toast({
                     description: (
@@ -50,7 +50,9 @@ export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboar
         setOpenPopover={setOpenPopover}
       >
         <button
-          onClick={() => setOpenPopover(!openPopover)}
+          onClick={(e) => {
+            setOpenPopover(!openPopover);
+          }}
         >
           <Icon 
               icon="mi:options-vertical" 

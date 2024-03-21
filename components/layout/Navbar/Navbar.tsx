@@ -37,12 +37,13 @@ export default function Navbar({ session }: { session: Session | null }) {
           </div>
         </div>
       </div>
-      <ProgressBar
+      {<ProgressBar
           height="4px"
           color="hsl(var(--accent))"
-          options={{ showSpinner: true }}
+          options={{ showSpinner: false }}
+          delay={10}
           shallowRouting
-        />
+        />}
     </>
   );
 }

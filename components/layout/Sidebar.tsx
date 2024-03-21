@@ -9,6 +9,7 @@ import Link from "next/link";
 
 export default function Sidebar({studyboards} : {studyboards: Tables<"Studyboards">[]}) {
     const { StudyboardModal, setShowStudyboardModal } = useStudyboardModal(studyboards);
+
     return (
         <>
             <StudyboardModal/>
@@ -25,8 +26,7 @@ export default function Sidebar({studyboards} : {studyboards: Tables<"Studyboard
                     </Tooltip>
                 </Link>
                 <Tooltip alignment="right" content="Select studyboard">
-                    <Button type="submit" variant={"ghost"} className="w-full mb-6 hover:scale-105 transition-all"
-                    onClick={() => setShowStudyboardModal(true)}>
+                    <Button type="submit" variant={"ghost"} className="w-full mb-6 hover:scale-105 transition-all">
                         <Icon 
                             icon="mdi:collections-bookmark-outline" 
                             width={26} 
