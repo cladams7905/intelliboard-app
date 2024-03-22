@@ -2,8 +2,15 @@
 
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 import Tooltip from "@/components/shared/tooltip";
+import { Tables } from "@/types/supabase";
+import { updateStudyboardById } from "@/app/dashboard/actions";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function BoardHeader() {
+export default function BoardHeader({studyboard} : {studyboard: Tables<"Studyboards">}) {
+
+    const router = useRouter();
+    const [title, setTitle] = useState(studyboard?.title)
 
     return (
     <div className={`absolute flex flex-row justify-between items-center h-[100px] py-6 px-8 mx-10`}
@@ -16,6 +23,18 @@ export default function BoardHeader() {
                 className="hover:bg-gray-200 cursor-pointer rounded-md"
                 style={{ color: 'rgb(107 114 128)' }} />
         </Tooltip>
+        <div className="flex items-center justify-center flex-wrap break-words"
+        style={{width: '45vw'}}>
+            <input type="text"
+                   className="text-3xl text-center text-secondary placeholder-gray-300 w-full" 
+                   placeholder="Untitled Project"
+                   defaultValue={title ? title : undefined}
+                   onChangeCapture={(e) => {
+                    setTitle(e.currentTarget.value);
+                    updateStudyboardById(studyboard.id, {title: e.currentTarget.value});
+                    router.refresh();
+                   }} />
+        </div>
         <div className="flex flex-wrap gap-3">
             <Tooltip alignment="top" content="Text size">
                 <Icon 

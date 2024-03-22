@@ -22,6 +22,10 @@ body {
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
 }
+
+input, textarea {
+  @apply focus:border-none outline-none
+}
  
 @layer base {
   :root {
