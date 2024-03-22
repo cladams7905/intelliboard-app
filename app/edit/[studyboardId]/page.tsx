@@ -5,6 +5,7 @@ import BoardHeader from "../components/BoardHeader";
 import { getStudyboardsById, getStudyboardsByUserId } from "../../dashboard/actions";
 import { Tables } from "@/types/supabase";
 import BoardContent from "../components/BoardContent";
+import SnapshotComponent from "../components/Snapshot";
 
 export default async function EditPage({ params }: { params: { studyboardId: number } }) {
 	const {data} = await readUserSession();
@@ -20,12 +21,14 @@ export default async function EditPage({ params }: { params: { studyboardId: num
 	<div className="flex flex-row justify-between pr-20 w-full gap-6 overflow-hidden fixed top-[64px]">
 		<Sidebar studyboards={userStudyboards}/>
 		<div className="w-11/12 h-screen-custom-150 bg-white mt-8">
-			<div className='flex flex-col align-center border border-gray-200 rounded-sm h-full'>
-				<BoardHeader studyboard={studyboard}/>
-				<div className="overflow-y-hidden break-words mt-[75px] px-12 h-full">
-					<BoardContent studyboard={studyboard}/>
+			<SnapshotComponent studyboard={studyboard}>
+				<div className='flex flex-col align-center border border-gray-200 rounded-sm h-full w-full'>
+					<BoardHeader studyboard={studyboard}/>
+					<div className="overflow-y-hidden break-words mt-[75px] px-12 h-full w-full">
+						<BoardContent studyboard={studyboard}/>
+					</div>
 				</div>
-			</div>
+			</SnapshotComponent>
 		</div>
 	</div>
 	);

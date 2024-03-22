@@ -1,6 +1,7 @@
 import { Tables } from "@/types/supabase";
 import TileOptions from "./TileOptions";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyboards">}) {
 
@@ -10,8 +11,16 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
         <TileOptions studyboard={studyboard}/>
         <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
           <div className="flex-col items-start max-w-48">
-              <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50">
-              </div>
+              {studyboard.snapshot_url ? (
+                <Image 
+                  className="w-48 h-32 p-2 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50" 
+                  alt="snapshot_url" 
+                  src={studyboard.snapshot_url}
+                  width={192} 
+                  height={128} />
+              ) : (
+                <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50" />
+              ) }
               <div className="flex flex-col flex-wrap gap-2 items-center justify-center p-2">
               {studyboard.title ? (
                 <div className="text-md break-words">{studyboard.title}</div>
