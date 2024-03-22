@@ -5,12 +5,23 @@ import Tooltip from "@/components/shared/tooltip";
 import { Tables } from "@/types/supabase";
 import { updateStudyboardById } from "@/app/dashboard/actions";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function BoardHeader({studyboard} : {studyboard: Tables<"Studyboards">}) {
 
     const router = useRouter();
     const [title, setTitle] = useState(studyboard?.title)
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            updateStudyboardById(studyboard.id, {title: title}).then(() => {
+                router.refresh();
+                // console.log("title: " + title)
+            })
+        }, 500)
+
+        return () => clearTimeout(timer)
+    }, [title, studyboard.id, router])
 
     return (
     <div className={`absolute flex flex-row justify-between items-center h-[100px] py-6 px-8 mx-10`}
@@ -29,11 +40,7 @@ export default function BoardHeader({studyboard} : {studyboard: Tables<"Studyboa
                    className="text-3xl text-center text-secondary placeholder-gray-300 w-full" 
                    placeholder="Untitled Project"
                    defaultValue={title ? title : undefined}
-                   onChangeCapture={(e) => {
-                    setTitle(e.currentTarget.value);
-                    updateStudyboardById(studyboard.id, {title: e.currentTarget.value});
-                    router.refresh();
-                   }} />
+                   onChangeCapture={(e) => {setTitle(e.currentTarget.value)}} />
         </div>
         <div className="flex flex-wrap gap-3">
             <Tooltip alignment="top" content="Text size">
