@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from 'react';
-import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image';
 import { updateStudyboardById } from '@/app/dashboard/actions';
 import { Tables } from '@/types/supabase';
 
@@ -14,24 +14,17 @@ export const SnapshotComponent = ({
 }) => {
 
     useEffect(() => {
-        const captureSnapshot = () => {
-            const captureElement = document.getElementById("areaToCapture");
-            if (!captureElement) return;
+        const node = document.getElementById("areaToCapture");
+        if (!node) return;
 
-            html2canvas(captureElement).then((canvas) => {
-                
-                // Convert the canvas content to a data URL (PNG format)
-                const dataUrl = canvas.toDataURL('image/png');
+        domtoimage.toPng(node, {style: {overflowY: "hidden"}})
+        .then((dataUrl) => {
+            updateStudyboardById(studyboard.id, { snapshot_url: dataUrl });
+        })
+        .catch((error) => {
+            console.error('Error taking screenshot:', error);
+        });
 
-                //Push dataUrl to db
-                updateStudyboardById(studyboard.id, { snapshot_url: dataUrl });
-            }).catch((err) => {
-                console.log("Error taking screenshot: " + err.message);
-            });
-        };
-        if (typeof window !== 'undefined') {
-            captureSnapshot();
-        }
     }, [studyboard.id]);
 
     return (

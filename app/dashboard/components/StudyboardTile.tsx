@@ -10,10 +10,11 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}>
         <TileOptions studyboard={studyboard}/>
         <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
-          <div className="flex-col items-start max-w-48">
+          <div className="flex-col items-start max-w-48 overflow-hidden">
               {studyboard.snapshot_url ? (
                 <Image 
-                  className="w-48 h-32 p-2 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50" 
+                  className="p-2 bg-white rounded-sm border-b border-gray-300 object-cover min-h-[128px] max-h-[128px] max-w-none" 
+                  // style={{objectPosition: "-235px -20px"}}
                   alt="snapshot_url" 
                   src={studyboard.snapshot_url}
                   width={192} 

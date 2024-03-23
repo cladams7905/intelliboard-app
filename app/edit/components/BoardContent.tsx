@@ -23,6 +23,7 @@ export default function BoardContent({ studyboard }: { studyboard: TablesInsert<
     return (
         <div className="flex items-center justify-center h-full w-full">
             <textarea
+                id="target-textarea"
                 className="h-full w-full break-words text-xl text-left leading-[7rem] tracking-wider lg:px-28 placeholder-gray-300 resize-none"
                 placeholder={"Type your own studyboard here!"}
                 value={content}
