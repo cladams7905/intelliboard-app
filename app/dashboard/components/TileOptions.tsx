@@ -10,7 +10,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/components/shared/use-toast";
 import { useUrl } from 'nextjs-current-url';
 
-export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboards">}) {
+export default function TileOptions({studyboard, renameTitle}: 
+  {studyboard: Tables<"Studyboards">, renameTitle: React.RefObject<HTMLInputElement>}) {
+  
   const [openPopover, setOpenPopover] = useState(false);
   const { pathname } = useUrl() ?? {};
   const router = useRouter();
@@ -22,7 +24,11 @@ export default function TileOptions({studyboard}: {studyboard: Tables<"Studyboar
           <div className="flex flex-col w-full rounded-md bg-white p-2 sm:w-32">
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              disabled
+              onClick={(e) => {
+                renameTitle.current?.classList.remove("hidden")
+                renameTitle.current?.focus()
+                renameTitle.current?.select()
+              }}
             >
               <Type className="h-4 w-4" />
               <p className="text-sm">Rename</p>

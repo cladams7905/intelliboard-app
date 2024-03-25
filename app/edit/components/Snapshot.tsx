@@ -17,7 +17,7 @@ export const SnapshotComponent = ({
         const node = document.getElementById("areaToCapture");
         if (!node) return;
 
-        domtoimage.toPng(node, {style: {overflowY: "hidden"}})
+        domtoimage.toPng(node, {style: {textAlign: "center"}})
         .then((dataUrl) => {
             updateStudyboardById(studyboard.id, { snapshot_url: dataUrl });
         })
@@ -25,7 +25,7 @@ export const SnapshotComponent = ({
             console.error('Error taking screenshot:', error);
         });
 
-    }, [studyboard.id]);
+    }, [studyboard.id, studyboard.content]);
 
     return (
         <div className="h-full" id="areaToCapture">
