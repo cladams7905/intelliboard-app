@@ -228,6 +228,38 @@ export type Database = {
         }
         Relationships: []
       }
+      LocalStudyboards: {
+        Row: {
+          created_by: string | null
+          id: number
+          last_opened: string | null
+          owned_by: string | null
+          studyboard_id: number | null
+        }
+        Insert: {
+          created_by?: string | null
+          id?: number
+          last_opened?: string | null
+          owned_by?: string | null
+          studyboard_id?: number | null
+        }
+        Update: {
+          created_by?: string | null
+          id?: number
+          last_opened?: string | null
+          owned_by?: string | null
+          studyboard_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_LocalStudyboards_studyboard_id_fkey"
+            columns: ["studyboard_id"]
+            isOneToOne: false
+            referencedRelation: "Studyboards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       Studyboards: {
         Row: {
           content: Json | null

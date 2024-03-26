@@ -4,12 +4,13 @@ import { Tables } from "@/types/supabase";
 import TileOptions from "./TileOptions";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useCallback } from "react";
-import { updateStudyboardById } from "../actions";
+import { useEffect, useRef, useCallback, useState } from "react";
+import { getLocalStudyboardById, updateLastOpenedTime, updateStudyboardById } from "../actions";
 
 export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyboards">}) {
 
   const titleRef = useRef<HTMLInputElement>(null);
+  const [localData, setLocalData] = useState<Tables<"LocalStudyboards"> | null>(null);
 
   const submitTitle = useCallback(() => {
     if (titleRef.current?.value !== "" && titleRef.current?.value !== studyboard.title) {
@@ -38,6 +39,13 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
     };
   }, [submitTitle]);
 
+  useEffect(() => {
+    getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
+      console.log(data)
+      setLocalData(data)
+    })
+  }, []);
+
   return (
     <div className="flex items-start h-fit justify-center relative bg-gray-100 border border-gray-300 rounded-sm hover:scale-105 hover:cursor-pointer transition-all"
       style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px' }}>
@@ -51,7 +59,9 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
               submitTitle();
             }
           }} />
-        <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
+        <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`} onClick={() => {
+          updateLastOpenedTime(studyboard.created_by, studyboard.id);
+        }}>
           {studyboard.snapshot_url ? (
             <Image
               className="p-2 bg-white rounded-sm border-b border-gray-300 object-cover min-h-[128px] max-h-[128px] max-w-none"
@@ -75,10 +85,43 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
                 </div>
               ))}
             </div>
-            <div className="text-xs break-words text-gray-400">Last opened: {studyboard.created_at /* TODO */}</div>
+            {localData?.last_opened ? (
+              <div className="text-xs break-words text-gray-400">{convertDateTime(localData.last_opened)}</div>
+            ) : (
+              <div className="text-xs break-words text-gray-400"></div>
+            )}
           </div>
         </Link>
       </div>
     </div>
   );
 }
+
+function convertDateTime(timestampz: string): string {
+  const currentDate = new Date();
+  const inputDate = new Date(timestampz);
+  const diffTime = Math.abs(currentDate.getTime() - inputDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+
+  const day = inputDate.getDate().toString().padStart(2, '0');
+  const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
+  let isPM = false;
+  let hours = inputDate.getHours();
+  if (hours > 12) {
+    hours -= 12;
+    isPM = true;
+  }
+  hours.toString().padStart(2, '0');
+  const minutes = inputDate.getMinutes().toString().padStart(2, '0');
+
+  const time = `${hours}:${minutes}${isPM ? 'PM' : 'AM'}`
+  
+  if (diffDays === 0) {
+    return `Today ${time}`;
+  } else if (diffDays === 1) {
+    return `Yesterday ${time}`;
+  } else {
+    return `${month}/${day} ${time}`;
+  }
+}
+

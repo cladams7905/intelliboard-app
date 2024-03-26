@@ -29,6 +29,35 @@ export async function getStudyboardsById(id: number) {
     return data;
 }
 
+export async function getLocalStudyboardById( userId: string, studyboardId: number) {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.from("LocalStudyboards").select()
+        .eq("created_by", userId)
+        .eq("studyboard_id", studyboardId)
+        .single();
+    if (error) {
+        console.error(`Error fetching local studyboard ${studyboardId}:`, error.message);
+        return null;
+    }
+    return data;
+}
+
+/**
+ * For now, this function only needs to update any column, and that will trigger 
+ * a sql trigger that updates the time.
+ */
+export async function updateLastOpenedTime(userId: string, studyboardId: number) {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.from("LocalStudyboards").update({studyboard_id: studyboardId})
+        .eq("created_by", userId)
+        .eq("studyboard_id", studyboardId)
+    if (error) {
+        console.error(`Error updating last opened time for studyboard ${studyboardId}:`, error.message);
+        return null;
+    }
+    return data;
+}
+
 export async function updateStudyboardById(id: number, values: TablesInsert<"Studyboards">) {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from("Studyboards").update(values).eq("id", id).select('*').single();
