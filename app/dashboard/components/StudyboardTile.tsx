@@ -16,9 +16,10 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       updateStudyboardById(studyboard.id, { title: titleRef.current?.value });
     }
     titleRef.current?.classList.add("hidden");
-  }, [titleRef, studyboard.id, studyboard.title]);
+  }, [studyboard.id, studyboard.title]);
 
   useEffect(() => {
+    //console.log("in studyboard tile: ")
     const handleOutsideAndEnterClick = (e: MouseEvent | KeyboardEvent) => {
       if (
         !titleRef.current?.contains(e.target as Node) &&
@@ -35,7 +36,7 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       window.removeEventListener("mousedown", handleOutsideAndEnterClick);
       window.removeEventListener("keydown", handleOutsideAndEnterClick);
     };
-  }, [studyboard.id, studyboard.title, submitTitle]);
+  }, [submitTitle]);
 
   return (
     <div className="flex items-start h-fit justify-center relative bg-gray-100 border border-gray-300 rounded-sm hover:scale-105 hover:cursor-pointer transition-all"

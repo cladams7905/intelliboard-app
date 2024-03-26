@@ -6,7 +6,7 @@ import { TablesInsert, Tables } from "@/types/supabase";
 export async function createStudyboard(studyboard : TablesInsert<"Studyboards">) {
     const supabase = await createSupabaseServerClient();
     const result = await supabase.from("Studyboards").insert(studyboard).select('*').single();
-    return JSON.stringify(result.data);
+    return JSON.stringify(result);
 }
 
 export async function getStudyboardsByUserId(userId: string) {

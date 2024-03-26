@@ -31,15 +31,7 @@ async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'
     const result = JSON.parse(await createStudyboard(studyboard));
     console.log(result)
     const { error } = result;
-    if (!error) {
-        toast({
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 text-white p-4">
-                    New studyboard created!
-                </pre>
-            ),
-        })
-    } else {
+    if (error) {
         toast({
             description: (
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 text-red-400">
@@ -47,6 +39,7 @@ async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'
                 </pre>
             ),
         })
+        return null;
     }
-    return result;
+    return result.data;
 }

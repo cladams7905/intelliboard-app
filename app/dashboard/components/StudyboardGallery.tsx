@@ -17,12 +17,14 @@ const StudyboardGallery = ({studyboards} : {studyboards: Tables<"Studyboards">[]
   const router = useRouter();
 
   useEffect(() => {
+    //console.log("in studyboard gallery: ")
     const channel = supabase.channel('studyboard changes').on(
       'postgres_changes', {
         event: '*',
         schema: 'public',
         table: 'Studyboards'
-      }, () => {
+      }, (payload) => {
+        //console.log(payload)
         startTransition(() => {
           router.refresh();
         });

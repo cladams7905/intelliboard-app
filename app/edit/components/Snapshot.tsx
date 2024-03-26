@@ -14,8 +14,16 @@ export const SnapshotComponent = ({
 }) => {
 
     useEffect(() => {
+        // console.log("in snapshot: ", studyboard)
+        if (JSON.stringify(studyboard.content) == "{}" && studyboard.title == null) {
+            console.log("exiting...")
+            return;
+        }
+        
         const node = document.getElementById("areaToCapture");
         if (!node) return;
+
+        //console.log("re-rendering...")
 
         domtoimage.toPng(node, {style: {textAlign: "center"}})
         .then((dataUrl) => {
@@ -25,7 +33,7 @@ export const SnapshotComponent = ({
             console.error('Error taking screenshot:', error);
         });
 
-    }, [studyboard.id, studyboard.content]);
+    }, []);
 
     return (
         <div className="h-full" id="areaToCapture">

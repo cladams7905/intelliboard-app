@@ -13,6 +13,7 @@ export default function BoardHeader({studyboard} : {studyboard: Tables<"Studyboa
     const [title, setTitle] = useState(studyboard?.title)
 
     useEffect(() => {
+        //console.log("in board header: ", studyboard)
         const timer = setTimeout(() => {
             updateStudyboardById(studyboard.id, {title: title}).then(() => {
                 router.refresh();
