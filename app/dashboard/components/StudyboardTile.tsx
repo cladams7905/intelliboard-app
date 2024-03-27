@@ -4,38 +4,90 @@ import { Tables } from "@/types/supabase";
 import TileOptions from "./TileOptions";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback, useState, useTransition } from "react";
 import { getLocalStudyboardById, updateStudyboardById } from "../actions";
+import { createBrowserClient } from "@supabase/ssr";
+import LoadingDots from "@/components/shared/LoadingDots";
+import { useRouter } from "next/navigation";
 
 export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyboards">}) {
 
-  const titleRef = useRef<HTMLInputElement>(null);
-  const [localData, setLocalData] = useState<Tables<"LocalStudyboards"> | null>(null);
+  const renameTitleRef = useRef<HTMLInputElement>(null);
+  const [snapshotUrl, setSnapshotUrl] = useState<string | null>("");
+  const [lastOpened, setLastOpened] = useState<string | null>("");
+  const [title, setTitle] = useState<string | null>(studyboard.title)
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const fetchLocalData = useCallback(async () => {
+    getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
+      if (data) {
+        setSnapshotUrl((prevUrl) => {
+          if (prevUrl !== data.snapshot_url) {
+            return data.snapshot_url;
+          } else {
+            return prevUrl;
+          }
+        });
+        setLastOpened((prevOpened) => {
+          if (prevOpened !== data.last_opened) {
+            return data.last_opened;
+          } else {
+            return prevOpened;
+          }
+        });
+      }
+    });
+  }, [studyboard.created_by, studyboard.id])
+
+  
   const submitTitle = useCallback(() => {
-    if (titleRef.current?.value !== "" && titleRef.current?.value !== studyboard.title) {
-      updateStudyboardById(studyboard.id, { title: titleRef.current?.value });
+    if (renameTitleRef.current?.value !== "" && renameTitleRef.current?.value !== studyboard.title) {
+      updateStudyboardById(studyboard.id, { title: renameTitleRef.current?.value })
     }
-    titleRef.current?.classList.add("hidden");
+    renameTitleRef.current?.classList.add("hidden");
+    if (renameTitleRef.current?.value) {
+      setTitle(renameTitleRef?.current.value)
+    }
   }, [studyboard.id, studyboard.title]);
+  
 
   useEffect(() => {
-    console.log("studyboard tile: ", studyboard.content, studyboard.title, studyboard.id)
+    const channel = supabase.channel('studyboard changes').on(
+      'postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'Studyboards',
+        filter: `id=eq.${studyboard.id}`, 
+      }, (payload) => {
+        console.log(payload)
+        startTransition(() => {
+          fetchLocalData()
+        });
+      }
+    ).subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    }
+  }, [fetchLocalData, submitTitle, router, studyboard.id, studyboard.title, supabase]);
+
+  useEffect(() => {
     const handleOutsideAndEnterClick = (e: MouseEvent | KeyboardEvent) => {
       if (
-        !titleRef.current?.contains(e.target as Node) &&
+        !renameTitleRef.current?.contains(e.target as Node) &&
         (e.type === "mousedown" || (e as KeyboardEvent).key === "Enter")
       ) {
         submitTitle();
       }
     };
 
-    if (!localData) {
-      getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
-        console.log(data)
-        setLocalData(data)
-      })
-    }
+    fetchLocalData();
 
     window.addEventListener("mousedown", handleOutsideAndEnterClick);
     window.addEventListener("keydown", handleOutsideAndEnterClick);
@@ -44,35 +96,37 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       window.removeEventListener("mousedown", handleOutsideAndEnterClick);
       window.removeEventListener("keydown", handleOutsideAndEnterClick);
     };
-  }, [submitTitle, studyboard, localData]);
+  }, [studyboard.created_by, studyboard.id, submitTitle, fetchLocalData]);
 
   return (
     <div className="flex items-start h-fit justify-center relative bg-gray-100 border border-gray-300 rounded-sm hover:scale-105 hover:cursor-pointer transition-all"
       style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px' }}>
-      <TileOptions studyboard={studyboard} renameTitle={titleRef} />
+      <TileOptions studyboard={studyboard} renameTitle={renameTitleRef} />
       <div className="flex-col items-start max-w-48 overflow-hidden">
         <input type="text"
           className="absolute hidden text-md break-words mt-[135px] ml-[7px] bg-gray-200 focus:ring-1 focus:ring-gray-400 rounded-sm text-center"
-          ref={titleRef}
+          ref={renameTitleRef}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               submitTitle();
             }
           }} />
         <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
-          {localData?.snapshot_url ? (
+          {!snapshotUrl || isPending ? (
+            <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50">
+              <LoadingDots color="hsl(var(--secondary))" />
+            </div>
+          ) : (
             <Image
               className="p-2 bg-white rounded-sm border-b border-gray-300 object-cover min-h-[128px] max-h-[128px] max-w-none"
               alt="snapshot_url"
-              src={localData.snapshot_url}
+              src={snapshotUrl}
               width={192}
               height={128} />
-          ) : (
-            <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50" />
           )}
           <div className="flex flex-col flex-wrap gap-2 items-center justify-center p-2">
-            {studyboard.title ? (
-              <div className="text-md break-words">{studyboard.title}</div>
+            {title ? (
+              <div className="text-md break-words">{title}</div>
             ) : (
               <div className="text-md text-gray-400 break-words">Untitled Project</div>
             )}
@@ -83,8 +137,8 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
                 </div>
               ))}
             </div>
-            {localData?.last_opened ? (
-              <div className="text-xs break-words text-gray-400">{convertDateTime(localData.last_opened)}</div>
+            {lastOpened ? (
+              <div className="text-xs break-words text-gray-400">{convertDateTime(lastOpened)}</div>
             ) : (
               <div className="text-xs break-words text-gray-400"></div>
             )}
