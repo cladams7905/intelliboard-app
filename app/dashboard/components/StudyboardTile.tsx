@@ -8,7 +8,7 @@ import { useEffect, useRef, useCallback, useState, useTransition } from "react";
 import { getLocalStudyboardById, updateStudyboardById } from "../actions";
 import { createBrowserClient } from "@supabase/ssr";
 import LoadingDots from "@/components/shared/LoadingDots";
-import { useRouter } from "next/navigation";
+import { convertDateTime } from "@/lib/utils";
 
 export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyboards">}) {
 
@@ -17,30 +17,13 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
   const [lastOpened, setLastOpened] = useState<string | null>("");
   const [title, setTitle] = useState<string | null>(studyboard.title)
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   const fetchLocalData = useCallback(async () => {
     getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
       if (data) {
-        setSnapshotUrl((prevUrl) => {
-          if (prevUrl !== data.snapshot_url) {
-            return data.snapshot_url;
-          } else {
-            return prevUrl;
-          }
-        });
-        setLastOpened((prevOpened) => {
-          if (prevOpened !== data.last_opened) {
-            return data.last_opened;
-          } else {
-            return prevOpened;
-          }
-        });
+        setSnapshotUrl(data.snapshot_url)
+        setLastOpened(data.last_opened)
       }
     });
   }, [studyboard.created_by, studyboard.id])
@@ -48,15 +31,21 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
   
   const submitTitle = useCallback(() => {
     if (renameTitleRef.current?.value !== "" && renameTitleRef.current?.value !== studyboard.title) {
-      updateStudyboardById(studyboard.id, { title: renameTitleRef.current?.value })
+      updateStudyboardById(studyboard.id, { title: renameTitleRef.current?.value }).then((data) => {
+        if (data?.title) {
+          setTitle(data?.title)
+        }
+      })
     }
     renameTitleRef.current?.classList.add("hidden");
-    if (renameTitleRef.current?.value) {
-      setTitle(renameTitleRef?.current.value)
-    }
   }, [studyboard.id, studyboard.title]);
-  
 
+  
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+  
   useEffect(() => {
     const channel = supabase.channel('studyboard changes').on(
       'postgres_changes', {
@@ -75,8 +64,9 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
     return () => {
       channel.unsubscribe();
     }
-  }, [fetchLocalData, submitTitle, router, studyboard.id, studyboard.title, supabase]);
+  }, [fetchLocalData, studyboard.id, studyboard.title, supabase]);
 
+  
   useEffect(() => {
     const handleOutsideAndEnterClick = (e: MouseEvent | KeyboardEvent) => {
       if (
@@ -148,33 +138,3 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
     </div>
   );
 }
-
-function convertDateTime(timestampz: string): string {
-  const currentDate = new Date();
-  currentDate.setHours(24, 0, 0, 0) //Set current date to midnight
-  const inputDate = new Date(timestampz);
-  const diffTime = Math.abs(currentDate.getTime() - inputDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
-
-  const day = inputDate.getDate().toString().padStart(2, '0');
-  const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
-  let isPM = false;
-  let hours = inputDate.getHours();
-  if (hours > 12) {
-    hours -= 12;
-    isPM = true;
-  }
-  hours.toString().padStart(2, '0');
-  const minutes = inputDate.getMinutes().toString().padStart(2, '0');
-
-  const time = `${hours}:${minutes}${isPM ? 'PM' : 'AM'}`
-  
-  if (diffDays === 0) {
-    return `Today ${time}`;
-  } else if (diffDays === 1) {
-    return `Yesterday ${time}`;
-  } else {
-    return `${month}/${day} ${time}`;
-  }
-}
-
