@@ -12,13 +12,16 @@ export default function BoardContent({ studyboard }: { studyboard: TablesInsert<
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            updateStudyboardById(studyboard.id as number, {content: { contentBody: content }})
-            router.refresh();
-            //console.log("content: " + content)
-        }, 500)
+            if (content != JSON.parse(JSON.stringify(studyboard?.content))?.contentBody) {
+                updateStudyboardById(studyboard.id as number, {content: { contentBody: content }}).then(() => {
+                    router.refresh();
+                })
+            }
+        }, 500);
     
-        return () => clearTimeout(timer)
-      }, [content, studyboard.id, router])
+        return () => clearTimeout(timer);
+    }, [content, router, studyboard.id, studyboard.content]);
+    
     
     return (
         <div className="flex items-center justify-center h-full w-full">

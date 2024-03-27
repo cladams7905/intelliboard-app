@@ -5,7 +5,7 @@ import TileOptions from "./TileOptions";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useCallback, useState } from "react";
-import { getLocalStudyboardById, updateLastOpenedTime, updateStudyboardById } from "../actions";
+import { getLocalStudyboardById, updateStudyboardById } from "../actions";
 
 export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyboards">}) {
 
@@ -20,7 +20,7 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
   }, [studyboard.id, studyboard.title]);
 
   useEffect(() => {
-    //console.log("in studyboard tile: ")
+    console.log("studyboard tile: ", studyboard.content, studyboard.title, studyboard.id)
     const handleOutsideAndEnterClick = (e: MouseEvent | KeyboardEvent) => {
       if (
         !titleRef.current?.contains(e.target as Node) &&
@@ -30,6 +30,13 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       }
     };
 
+    if (!localData) {
+      getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
+        console.log(data)
+        setLocalData(data)
+      })
+    }
+
     window.addEventListener("mousedown", handleOutsideAndEnterClick);
     window.addEventListener("keydown", handleOutsideAndEnterClick);
 
@@ -37,14 +44,7 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
       window.removeEventListener("mousedown", handleOutsideAndEnterClick);
       window.removeEventListener("keydown", handleOutsideAndEnterClick);
     };
-  }, [submitTitle]);
-
-  useEffect(() => {
-    getLocalStudyboardById(studyboard.created_by, studyboard.id).then((data) => {
-      console.log(data)
-      setLocalData(data)
-    })
-  }, []);
+  }, [submitTitle, studyboard, localData]);
 
   return (
     <div className="flex items-start h-fit justify-center relative bg-gray-100 border border-gray-300 rounded-sm hover:scale-105 hover:cursor-pointer transition-all"
@@ -59,14 +59,12 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
               submitTitle();
             }
           }} />
-        <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`} onClick={() => {
-          updateLastOpenedTime(studyboard.created_by, studyboard.id);
-        }}>
-          {studyboard.snapshot_url ? (
+        <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
+          {localData?.snapshot_url ? (
             <Image
               className="p-2 bg-white rounded-sm border-b border-gray-300 object-cover min-h-[128px] max-h-[128px] max-w-none"
               alt="snapshot_url"
-              src={studyboard.snapshot_url}
+              src={localData.snapshot_url}
               width={192}
               height={128} />
           ) : (
@@ -99,6 +97,7 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
 
 function convertDateTime(timestampz: string): string {
   const currentDate = new Date();
+  currentDate.setHours(24, 0, 0, 0) //Set current date to midnight
   const inputDate = new Date(timestampz);
   const diffTime = Math.abs(currentDate.getTime() - inputDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;

@@ -46,9 +46,9 @@ export async function getLocalStudyboardById( userId: string, studyboardId: numb
  * For now, this function only needs to update any column, and that will trigger 
  * a sql trigger that updates the time.
  */
-export async function updateLastOpenedTime(userId: string, studyboardId: number) {
+export async function updateLocalStudyboard(userId: string, studyboardId: number, snapshot_url: string) {
     const supabase = await createSupabaseServerClient();
-    const { data, error } = await supabase.from("LocalStudyboards").update({studyboard_id: studyboardId})
+    const { data, error } = await supabase.from("LocalStudyboards").update({snapshot_url: snapshot_url})
         .eq("created_by", userId)
         .eq("studyboard_id", studyboardId)
     if (error) {

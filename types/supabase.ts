@@ -234,6 +234,7 @@ export type Database = {
           id: number
           last_opened: string | null
           owned_by: string | null
+          snapshot_url: string | null
           studyboard_id: number | null
         }
         Insert: {
@@ -241,6 +242,7 @@ export type Database = {
           id?: number
           last_opened?: string | null
           owned_by?: string | null
+          snapshot_url?: string | null
           studyboard_id?: number | null
         }
         Update: {
@@ -248,6 +250,7 @@ export type Database = {
           id?: number
           last_opened?: string | null
           owned_by?: string | null
+          snapshot_url?: string | null
           studyboard_id?: number | null
         }
         Relationships: [

@@ -13,16 +13,16 @@ export default function BoardHeader({studyboard} : {studyboard: Tables<"Studyboa
     const [title, setTitle] = useState(studyboard?.title)
 
     useEffect(() => {
-        //console.log("in board header: ", studyboard)
         const timer = setTimeout(() => {
-            updateStudyboardById(studyboard.id, {title: title}).then(() => {
-                router.refresh();
-                // console.log("title: " + title)
-            })
+            if (title != studyboard.title) {
+                updateStudyboardById(studyboard.id, {title: title}).then(() => {
+                    router.refresh();
+                })
+            }
         }, 500)
 
         return () => clearTimeout(timer)
-    }, [title, studyboard.id, router])
+    }, [title, router, studyboard.id, studyboard.title])
 
     return (
     <div className={`absolute flex flex-row justify-between items-center h-[100px] py-6 px-8 mx-10`}
