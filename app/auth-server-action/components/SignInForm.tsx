@@ -94,12 +94,11 @@ export default function SignInForm({closeSignInModal} : {closeSignInModal: () =>
 									onChange={field.onChange}
 								/>
 							</FormControl>
-
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex bg-secondary" style={{ marginTop: '2.5rem' }}>
+				<Button type="submit" className="w-full text-white bg-secondary border-secondary hover:bg-secondary-foreground hover:border-secondary-foreground" style={{ marginTop: '2.5rem' }}>
 					{isPending ? (
 						<LoadingDots color="#FFFFFF" />
 					) : (

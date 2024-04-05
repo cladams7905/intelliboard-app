@@ -19,9 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body className={`${cx(inter.variable, righteous.variable)}`}>
-        <div className="fixed h-screen w-full bg-gray-50" />
+        <div className="fixed h-screen w-full" />
           <Suspense fallback="...">
             <NavbarWapper/>
           </Suspense>

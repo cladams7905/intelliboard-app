@@ -138,6 +138,7 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 									placeholder="Confirm Password"
 									{...field}
 									type="password"
+									className="input input-bordered input-md flex items-center gap-2 w-full"
 									onChange={field.onChange}
 								/>
 							</FormControl>
@@ -145,7 +146,7 @@ export default function RegisterForm({closeSignInModal} : {closeSignInModal: () 
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full flex gap-2 bg-secondary" style={{ marginTop: '2.5rem' }}>
+				<Button type="submit" className="w-full text-white bg-secondary border-secondary hover:bg-secondary-foreground hover:border-secondary-foreground" style={{ marginTop: '2.5rem' }}>
 					{isPending ? (
 						<LoadingDots color="#FFFFFF" />
 					) : (

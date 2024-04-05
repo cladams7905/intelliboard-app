@@ -23,9 +23,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input, textarea {
+/* input, textarea {
   @apply focus:border-none outline-none
-}
+} */
  
 @layer base {
   :root {
@@ -38,11 +38,11 @@ input, textarea {
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
  
-    --primary: 48 100% 83%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 205 92% 64%;
+    --primary-foreground: 205 92% 81%;
  
-    --secondary: 200 100 18%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 29 81 62%;
+    --secondary-foreground: 29 81% 81%;
  
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;

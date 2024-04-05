@@ -4,6 +4,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import { getStudyboardsByUserId } from "./actions";
 import readUserSession from "@/lib/actions/readUserSession";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/shared/button";
 
 export default async function Dashboard() {
 
@@ -15,8 +16,11 @@ export default async function Dashboard() {
 
   return (
     <div className="flex flex-row pr-20 w-full gap-6 overflow-hidden fixed top-[64px]">
-      <Sidebar studyboards={userStudyboards}/>
-    <div className="flex flex-col flex-wrap gap-6 mx-16 ">
+      {/* <Sidebar studyboards={userStudyboards}/> */}
+      <div className="flex flex-col flex-wrap gap-6 p-6 w-1/4 min-h-screen border-r border-gray-200">
+    
+      </div>
+    {/* <div className="flex flex-col flex-wrap gap-6 mx-16 ">
       <div className="text-xl text-secondary mt-10">Create a new studyboard</div>
       <div className="ml-3 mt-2">
         <div className="flex flex-row flex-wrap gap-4 items-center">
@@ -27,7 +31,7 @@ export default async function Dashboard() {
       <div className="ml-3">
           <StudyboardGallery studyboards={userStudyboards}/>
       </div>
-    </div>
+    </div> */}
   </div>
   );
 }
