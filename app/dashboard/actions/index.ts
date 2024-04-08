@@ -1,7 +1,9 @@
 "use server";
 
 import createSupabaseServerClient from "@/lib/supabase/server";
+import { localStudyboard } from "@/types/customTypes";
 import { TablesInsert, Tables } from "@/types/supabase";
+import { Session } from "@supabase/supabase-js";
 
 export async function createStudyboard(studyboard : TablesInsert<"Studyboards">) {
     const supabase = await createSupabaseServerClient();
@@ -56,6 +58,48 @@ export async function updateLocalStudyboard(userId: string, studyboardId: number
         return null;
     }
     return data;
+}
+
+/**
+ * Combines all public data about a studyboard with local data
+ * @param userData the current user session data
+ * @returns an array of all studyboards associated with a user, combined with local data about the studyboard (last time opened, original owner, etc)
+ */
+export async function getLocalStudyboardData(userData : {session: Session}) {
+    
+    const studyboards = await getStudyboardsByUserId(userData?.session.user.id) || [];
+    let localStudyboards: localStudyboard[] = [];
+
+    for (const studyboard of studyboards) {
+      const localData = await getLocalStudyboardById(studyboard.created_by, studyboard.id);
+
+      if (localData) {
+        let localStudyboard: localStudyboard = {
+          content: studyboard.content,
+          created_at: studyboard.created_at,
+          created_by: studyboard.created_by,
+          difficulty: studyboard.difficulty,
+          id: studyboard.id,
+          is_public: studyboard.is_public,
+          language: studyboard.language,
+          tags: studyboard.tags,
+          title: studyboard.title,
+          snapshot_url: localData?.snapshot_url,
+          last_opened: localData?.last_opened,
+          owned_by: localData.owned_by
+        };
+        localStudyboards.push(localStudyboard);
+      }
+    }
+
+    // Reorder localStudyboards based on last_opened value
+    localStudyboards.sort((a, b) => {
+        if (!a.last_opened) return 1;
+        if (!b.last_opened) return -1;
+        return new Date(b.last_opened).getTime() - new Date(a.last_opened).getTime();
+    });
+
+    return localStudyboards;
 }
 
 export async function updateStudyboardById(id: number, values: TablesInsert<"Studyboards">) {

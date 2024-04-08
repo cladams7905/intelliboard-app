@@ -4,10 +4,10 @@ import { Button } from "@/components/shared/button";
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 import Tooltip from "@/components/shared/tooltip";
 import useStudyboardModal from "@/app/dashboard/components/StudyboardModal";
-import { Tables } from "@/types/supabase";
 import Link from "next/link";
+import { localStudyboard } from "@/types/customTypes";
 
-export default function Sidebar({studyboards} : {studyboards: Tables<"Studyboards">[]}) {
+export default function Sidebar({studyboards} : {studyboards: localStudyboard[]}) {
     const { StudyboardModal, setShowStudyboardModal } = useStudyboardModal(studyboards);
 
     return ( 

@@ -2,7 +2,7 @@ import readUserSession from "@/lib/actions/readUserSession";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import BoardHeader from "../components/BoardHeader";
-import { getStudyboardsById, getStudyboardsByUserId } from "../../dashboard/actions";
+import { getLocalStudyboardData, getStudyboardsById } from "../../dashboard/actions";
 import { Tables } from "@/types/supabase";
 import BoardContent from "../components/BoardContent";
 import SnapshotComponent from "../components/Snapshot";
@@ -15,7 +15,7 @@ export default async function EditPage({ params }: { params: { studyboardId: num
 		return redirect('/')
 	}
 
-	const userStudyboards = await getStudyboardsByUserId(data?.session.user.id) || [];
+	const userStudyboards = await getLocalStudyboardData(data);
 	const studyboard = await getStudyboardsById(params.studyboardId) as Tables<"Studyboards">;
 
 	return (

@@ -4,14 +4,14 @@ import { useState } from "react";
 import Popover from "@/components/shared/Popover";
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 import { Trash2, Type } from "lucide-react";
-import { Tables } from "@/types/supabase";
 import { deleteStudyboardById } from "../actions";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/shared/use-toast";
 import { useUrl } from 'nextjs-current-url';
+import { localStudyboard } from "@/types/customTypes";
 
 export default function TileOptions({studyboard, renameTitle}: 
-  {studyboard: Tables<"Studyboards">, renameTitle: React.RefObject<HTMLInputElement>}) {
+  {studyboard: localStudyboard, renameTitle: React.RefObject<HTMLInputElement>}) {
   
   const [openPopover, setOpenPopover] = useState(false);
   const { pathname } = useUrl() ?? {};

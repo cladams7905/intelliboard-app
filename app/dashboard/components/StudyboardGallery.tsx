@@ -1,9 +1,35 @@
 "use client";
 
+import { localStudyboard } from "@/types/customTypes";
 import StudyboardTile from "./StudyboardTile";
-import { Tables } from "@/types/supabase";
+import { createBrowserClient } from "@supabase/ssr";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const StudyboardGallery = ({studyboards} : {studyboards: Tables<"Studyboards">[]}) => {
+const StudyboardGallery = ({studyboards} : {studyboards: localStudyboard[]}) => {
+
+  const router = useRouter();
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+  
+  useEffect(() => {
+    const channel = supabase.channel('studyboard changes').on(
+      'postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'Studyboards'
+      }, (payload) => {
+        console.log("supabase detected changes!", payload)
+        router.refresh();
+      }
+    ).subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    }
+  }, [supabase, router]);
 
   return (
     <div className="flex flex-row flex-wrap gap-6">

@@ -9,6 +9,7 @@ import {
 import AddStudyboardTile from "./AddStudyboardTile";
 import StudyboardGallery from "./StudyboardGallery";
 import { Tables } from "@/types/supabase";
+import { localStudyboard } from "@/types/customTypes";
 
 
 const StudyboardModal = ({
@@ -18,7 +19,7 @@ const StudyboardModal = ({
 }: {
   showStudyboardModal: boolean;
   setShowStudyboardModal: Dispatch<SetStateAction<boolean>>;
-  studyboards: Tables<"Studyboards">[];
+  studyboards: localStudyboard[];
 }) => {
   return (
     <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-4/5">
@@ -40,7 +41,7 @@ const StudyboardModal = ({
   );
 };
 
-export default function useStudyboardModal(studyboards: Tables<"Studyboards">[]) {
+export default function useStudyboardModal(studyboards: localStudyboard[]) {
   const [showStudyboardModal, setShowStudyboardModal] = useState(false);
 
   const StudyboardModalCallback = useCallback(() => {
