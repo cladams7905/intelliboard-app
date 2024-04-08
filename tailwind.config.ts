@@ -23,6 +23,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
+        heading: ['var(--font-atma)'],
         title: ['var(--font-righteous)'],
         sans: ['var(--font-inter)'],
       },

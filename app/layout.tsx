@@ -5,12 +5,12 @@ import { Toaster } from "@/components/shared/toaster";
 import type { Metadata } from "next";
 import NavbarWapper from "@/components/layout/Navbar/NavbarWrapper";
 import "./globals.css";
-import { inter, righteous } from "@/public/fonts";
+import { inter, righteous, atma } from "@/public/fonts";
 import cx from "classnames";
 
 export const metadata: Metadata = {
-  title: "Studibee",
-  description: "AI text reader for learning foreign languages",
+  title: "Studybird",
+  description: "AI-generated teaching materials tailored to individual student's needs",
 };
 
 export default function RootLayout({
@@ -20,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="light">
-      <body className={`${cx(inter.variable, righteous.variable)}`}>
+      <body className={`${cx(inter.variable, righteous.variable, atma.variable)}`}>
         <div className="fixed h-screen w-full" />
           <Suspense fallback="...">
             <NavbarWapper/>
           </Suspense>
-          <main className="flex w-full flex-col items-center justify-center py-24">
+          <main className="flex w-full flex-col items-center justify-center">
             {children} <Toaster />
             <Footer/>
           </main>

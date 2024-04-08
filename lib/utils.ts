@@ -19,6 +19,8 @@ export function convertDateTime(timestampz: string): string {
   if (hours > 12) {
     hours -= 12;
     isPM = true;
+  } else if (hours == 0) {
+    hours = 12;
   }
   hours.toString().padStart(2, '0');
   const minutes = inputDate.getMinutes().toString().padStart(2, '0');

@@ -1,4 +1,4 @@
-import { Inter,Righteous } from "next/font/google";
+import { Inter,Righteous,Atma } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -10,3 +10,9 @@ export const righteous = Righteous({
   weight: "400",
   subsets: ["latin"],
 });
+
+export const atma = Atma({
+  variable: "--font-atma",
+  weight: "600",
+  subsets: ["latin"]
+})

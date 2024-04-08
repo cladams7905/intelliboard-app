@@ -32,7 +32,7 @@ const StudyboardModal = ({
           <div className={`flex flex-col items-center justify-start w-1/3`}>
             <div className="text-xl text-secondary">Create a new studyboard</div>
             <div className="my-4 p-2">
-              <AddStudyboardTile/>
+              <AddStudyboardTile variant="lg"/>
             </div>
           </div>
       </div>

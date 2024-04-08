@@ -18,12 +18,12 @@ export default function TileOptions({studyboard, renameTitle}:
   const router = useRouter();
 
   return (
-    <div className="absolute top-2 right-1">
+    <div className="absolute bottom-10 right-2">
       <Popover
         content={
           <div className="flex flex-col w-full rounded-md bg-white p-2 sm:w-32">
             <button
-              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-100"
+              className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-200"
               onClick={(e) => {
                 renameTitle.current?.classList.remove("hidden")
                 renameTitle.current?.focus()

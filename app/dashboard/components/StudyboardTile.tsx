@@ -89,10 +89,9 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
   }, [studyboard.created_by, studyboard.id, submitTitle, fetchLocalData]);
 
   return (
-    <div className="flex items-start h-fit justify-center relative bg-gray-100 border border-gray-300 rounded-sm hover:scale-105 hover:cursor-pointer transition-all"
-      style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px' }}>
+    <div className="card relative w-64 overflow-hidden bg-gray-100 shadow-md flex items-start justify-center border border-gray-200 rounded-sm hover:scale-105 hover:cursor-pointer transition-all">
       <TileOptions studyboard={studyboard} renameTitle={renameTitleRef} />
-      <div className="flex-col items-start max-w-48 overflow-hidden">
+      <div className="flex-col items-start max-w-64">
         <input type="text"
           className="absolute hidden text-md break-words mt-[135px] ml-[7px] bg-gray-200 focus:ring-1 focus:ring-gray-400 rounded-sm text-center"
           ref={renameTitleRef}
@@ -103,20 +102,20 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
           }} />
         <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
           {!snapshotUrl || isPending ? (
-            <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50">
+            <div className="flex items-center justify-center w-64 h-[150px] bg-white rounded-sm border-b border-gray-300 hover:bg-gray-50">
               <LoadingDots color="hsl(var(--secondary))" />
             </div>
           ) : (
             <Image
-              className="p-2 bg-white rounded-sm border-b border-gray-300 object-cover min-h-[128px] max-h-[128px] max-w-none"
+              className="bg-white rounded-sm border-b border-gray-300 object-cover object-left-top max-w-none max-h-[150px]"
               alt="snapshot_url"
               src={snapshotUrl}
-              width={192}
+              width={355}
               height={128} />
           )}
-          <div className="flex flex-col flex-wrap gap-2 items-center justify-center p-2">
+          <div className="card-body h-[76px] flex flex-col flex-wrap gap-2 items-center justify-center p-2">
             {title ? (
-              <div className="text-md break-words">{title}</div>
+              <div className="card-title text-[18px] break-words">{title}</div>
             ) : (
               <div className="text-md text-gray-400 break-words">Untitled Project</div>
             )}
@@ -138,3 +137,14 @@ export default function StudyboardTile({studyboard}: {studyboard: Tables<"Studyb
     </div>
   );
 }
+
+{/* <div className="card w-96 bg-base-100 shadow-xl">
+  <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+  <div className="card-body">
+    <h2 className="card-title">Shoes!</h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div className="card-actions justify-end">
+      <button className="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+</div> */}
