@@ -6,7 +6,6 @@ import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 import { Trash2, Type } from "lucide-react";
 import { deleteStudyboardById } from "../actions";
 import { useRouter } from "next/navigation";
-import { toast } from "@/components/shared/use-toast";
 import { useUrl } from 'nextjs-current-url';
 import { localStudyboard } from "@/types/customTypes";
 
@@ -17,6 +16,21 @@ export default function TileOptions({studyboard, renameTitle}:
   const { pathname } = useUrl() ?? {};
   const router = useRouter();
 
+  const handleRename = () => {
+    renameTitle.current?.classList.remove("hidden")
+    renameTitle.current?.focus()
+    renameTitle.current?.select()
+  }
+  
+  const handleDelete = () => {
+    if (pathname == `/edit/${studyboard.id}`) {
+      router.push('/dashboard')
+    }
+    deleteStudyboardById(studyboard.id).then(() => {
+      router.refresh();
+    })
+  }
+
   return (
     <div className="absolute bottom-10 right-2">
       <Popover
@@ -24,32 +38,14 @@ export default function TileOptions({studyboard, renameTitle}:
           <div className="flex flex-col w-full rounded-md bg-white p-2 sm:w-32">
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-200"
-              onClick={(e) => {
-                renameTitle.current?.classList.remove("hidden")
-                renameTitle.current?.focus()
-                renameTitle.current?.select()
-              }}
+              onClick={handleRename}
             >
               <Type className="h-4 w-4" />
               <p className="text-sm">Rename</p>
             </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 cursor-pointer text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              onClick={(e) => {
-                if (pathname == `/edit/${studyboard.id}`) {
-                  router.push('/dashboard')
-                }
-                deleteStudyboardById(studyboard.id).then(() => {
-                  toast({
-                    description: (
-                      <pre className="mt-2 rounded-md bg-slate-950 p-4 text-white">
-                        Successfully deleted &quot;{studyboard.title ? studyboard.title : "Untitled Project"}&quot;
-                      </pre>
-                    ),
-                  })
-                })
-                router.refresh();
-              }}
+              onClick={handleDelete}
             >
               <Trash2 className="h-4 w-4" />
               <p className="text-sm">Delete</p>
@@ -61,7 +57,7 @@ export default function TileOptions({studyboard, renameTitle}:
         setOpenPopover={setOpenPopover}
       >
         <button
-          onClick={(e) => {
+          onClick={() => {
             setOpenPopover(!openPopover);
           }}
         >

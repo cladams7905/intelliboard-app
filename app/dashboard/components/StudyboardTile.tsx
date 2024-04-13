@@ -62,9 +62,13 @@ export default function StudyboardTile({studyboard}: {studyboard: localStudyboar
             }
           }} />
         <Link href="/edit/[studyboardId]" as={`/edit/${studyboard.id}`}>
-          {!snapshotUrl || isPending ? (
+          {!snapshotUrl ? (
             <div className="flex items-center justify-center w-64 h-[150px] bg-white rounded-sm border-b border-gray-200 hover:bg-gray-50">
-              <LoadingDots color="hsl(var(--secondary))" />
+              {isPending ? (
+                <LoadingDots color="hsl(var(--secondary))" />
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             <Image

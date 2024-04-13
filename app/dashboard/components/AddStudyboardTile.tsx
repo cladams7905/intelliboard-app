@@ -7,12 +7,14 @@ import { toast } from "@/components/shared/use-toast";
 import { useRouter } from "next/navigation";
 import Tooltip from "@/components/shared/tooltip";
 import { Button } from "@/components/shared/button";
+import { localStudyboard } from "@/types/customTypes";
 
 interface TileProps {
     variant: 'sm' | 'lg';
+    studyboards: localStudyboard[];
   }
 
-const AddStudyboardTile: React.FC<TileProps> = ({ variant }) => {
+const AddStudyboardTile: React.FC<TileProps> = ({ variant, studyboards }) => {
     const router = useRouter();
     const studyboard : TablesInsert<'Studyboards'> = {};
 
@@ -37,6 +39,7 @@ const AddStudyboardTile: React.FC<TileProps> = ({ variant }) => {
             <div className="flex items-center justify-center w-48 h-32 bg-white rounded-sm border border-gray-300 hover:cursor-pointer hover:bg-gray-100 hover:scale-105 transition-all"
             style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px'}}
             onClick={() => {
+                let id: string = "";
                 onAddStudyboardTileSubmit(studyboard).then((result) => {
                     router.push(`/edit/${result.id}`);
                 })
@@ -55,7 +58,6 @@ const AddStudyboardTile: React.FC<TileProps> = ({ variant }) => {
 
 async function onAddStudyboardTileSubmit(studyboard : TablesInsert<'Studyboards'>) {
     const result = JSON.parse(await createStudyboard(studyboard));
-    console.log(result)
     const { error } = result;
     if (error) {
         toast({

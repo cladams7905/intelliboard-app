@@ -16,10 +16,13 @@ export function convertDateTime(timestampz: string): string {
   const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
   let isPM = false;
   let hours = inputDate.getHours();
-  if (hours > 12) {
-    hours -= 12;
+  if (hours >= 12) {
+    if (hours != 12) {
+      hours -= 12;
+    }
     isPM = true;
-  } else if (hours == 0) {
+  }
+  else if (hours == 0) {
     hours = 12;
   }
   hours.toString().padStart(2, '0');

@@ -21,7 +21,7 @@ export async function getStudyboardsByUserId(userId: string) {
     return data;
 }
 
-export async function getStudyboardsById(id: number) {
+export async function getStudyboardById(id: number) {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from("Studyboards").select().eq("id", id).single()
     if (error) {
@@ -62,12 +62,12 @@ export async function updateLocalStudyboard(userId: string, studyboardId: number
 
 /**
  * Combines all public data about a studyboard with local data
- * @param userData the current user session data
+ * @param userId
  * @returns an array of all studyboards associated with a user, combined with local data about the studyboard (last time opened, original owner, etc)
  */
-export async function getLocalStudyboardData(userData : {session: Session}) {
+export async function getLocalStudyboardData(userId : string) {
     
-    const studyboards = await getStudyboardsByUserId(userData?.session.user.id) || [];
+    const studyboards = await getStudyboardsByUserId(userId) || [];
     let localStudyboards: localStudyboard[] = [];
 
     for (const studyboard of studyboards) {
@@ -92,7 +92,7 @@ export async function getLocalStudyboardData(userData : {session: Session}) {
       }
     }
 
-    // Reorder localStudyboards based on last_opened value
+    //Reorder localStudyboards based on last_opened value
     localStudyboards.sort((a, b) => {
         if (!a.last_opened) return 1;
         if (!b.last_opened) return -1;

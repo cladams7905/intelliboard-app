@@ -8,18 +8,19 @@ import {
 } from "react";
 import AddStudyboardTile from "./AddStudyboardTile";
 import StudyboardGallery from "./StudyboardGallery";
-import { Tables } from "@/types/supabase";
 import { localStudyboard } from "@/types/customTypes";
 
 
 const StudyboardModal = ({
   showStudyboardModal,
   setShowStudyboardModal,
-  studyboards
+  studyboards,
+  sessionUserId,
 }: {
   showStudyboardModal: boolean;
   setShowStudyboardModal: Dispatch<SetStateAction<boolean>>;
   studyboards: localStudyboard[];
+  sessionUserId: string;
 }) => {
   return (
     <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-4/5">
@@ -27,13 +28,13 @@ const StudyboardModal = ({
           <div className="flex flex-col items-start justify-center w-2/3 border-r border-gray-300">
             <div className="text-xl text-secondary text-center w-full">Select a studyboard</div>
             <div className={`flex flex-row flex-wrap gap-4 p-2 my-4 items-start overflow-y-scroll max-h-[440px]`}>
-              <StudyboardGallery studyboards={studyboards}/>
+              <StudyboardGallery studyboards={studyboards} sessionUserId={sessionUserId}/>
             </div>
           </div>
           <div className={`flex flex-col items-center justify-start w-1/3`}>
             <div className="text-xl text-secondary">Create a new studyboard</div>
             <div className="my-4 p-2">
-              <AddStudyboardTile variant="lg"/>
+              <AddStudyboardTile variant="lg" studyboards={studyboards}/>
             </div>
           </div>
       </div>
@@ -41,7 +42,7 @@ const StudyboardModal = ({
   );
 };
 
-export default function useStudyboardModal(studyboards: localStudyboard[]) {
+export default function useStudyboardModal(studyboards: localStudyboard[], sessionUserId: string) {
   const [showStudyboardModal, setShowStudyboardModal] = useState(false);
 
   const StudyboardModalCallback = useCallback(() => {
@@ -50,9 +51,10 @@ export default function useStudyboardModal(studyboards: localStudyboard[]) {
         showStudyboardModal={showStudyboardModal}
         setShowStudyboardModal={setShowStudyboardModal}
         studyboards={studyboards}
+        sessionUserId={sessionUserId}
       />
     );
-  }, [showStudyboardModal, setShowStudyboardModal, studyboards]);
+  }, [showStudyboardModal, setShowStudyboardModal, studyboards, sessionUserId]);
 
   return useMemo(
     () => ({ setShowStudyboardModal, StudyboardModal: StudyboardModalCallback }),

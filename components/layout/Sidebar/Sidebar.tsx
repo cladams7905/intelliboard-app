@@ -7,8 +7,14 @@ import useStudyboardModal from "@/app/dashboard/components/StudyboardModal";
 import Link from "next/link";
 import { localStudyboard } from "@/types/customTypes";
 
-export default function Sidebar({studyboards} : {studyboards: localStudyboard[]}) {
-    const { StudyboardModal, setShowStudyboardModal } = useStudyboardModal(studyboards);
+export default function Sidebar({
+    studyboards,
+    sessionUserId,
+  } : {
+    studyboards : localStudyboard[],
+    sessionUserId: string
+  }) {
+    const { StudyboardModal, setShowStudyboardModal } = useStudyboardModal(studyboards, sessionUserId);
 
     return ( 
     <div className="hidden lg:block h-screen-custom-65 w-[60px] bg-secondary px-3 py-10 z-10">
