@@ -14,16 +14,15 @@ export default function StudyboardTile({studyboard}: {studyboard: localStudyboar
   const renameTitleRef = useRef<HTMLInputElement>(null);
   const [snapshotUrl, setSnapshotUrl] = useState<string | null>(studyboard.snapshot_url);
   const [lastOpened, setLastOpened] = useState<string | null>(studyboard.last_opened);
-  const [title, setTitle] = useState<string | null>(studyboard.title)
+  const [title, setTitle] = useState<string | null>(checkStringLength(studyboard.title))
   const [isPending, startTransition] = useTransition();
 
   
   const submitTitle = useCallback(() => {
     if (renameTitleRef.current?.value !== "" && renameTitleRef.current?.value !== studyboard.title) {
-      console.log("submitting new title...")
       updateStudyboardById(studyboard.id, { title: renameTitleRef.current?.value }).then((data) => {
         if (data?.title) {
-          setTitle(data?.title)
+          setTitle(checkStringLength(data?.title))
         }
       })
     }
@@ -101,4 +100,17 @@ export default function StudyboardTile({studyboard}: {studyboard: localStudyboar
       </div>
     </div>
   );
+}
+
+function checkStringLength(str: string | null) {
+  if (str == null) {
+    return "";
+  }
+
+  let modifiedStr = str;
+  if (str.length > 25) {
+    modifiedStr = str.substring(0, 20) + "...";
+  }
+
+  return modifiedStr;
 }

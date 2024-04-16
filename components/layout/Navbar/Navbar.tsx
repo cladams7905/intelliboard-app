@@ -4,7 +4,6 @@ import useSignInModal from "@/components/layout/SignInModal";
 import UserDropdown from './UserDropdown';
 import { Session } from '@supabase/supabase-js';
 import { Logo } from "@/components/shared/icons/logo";
-import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { Icon } from "@iconify-icon/react/dist/iconify.mjs";
 
 import s from './Navbar.module.css';
@@ -60,13 +59,6 @@ export default function Navbar({ session }: { session: Session | null }) {
           <a className="btn btn-md p-3 bg-secondary border-secondary hover:bg-secondary-foreground hover:border-secondary-foreground z-30" onClick={() => setShowSignInModal(true)}>Get started!</a>
         )}
       </div>
-      {<ProgressBar
-        height="4px"
-        color="hsl(var(--accent))"
-        options={{ showSpinner: false }}
-        delay={10}
-        shallowRouting
-      />}
     </div>
   </>
   );

@@ -26,17 +26,16 @@ const StudyboardModal = ({
     <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-4/5">
       <div className="flex flex-row w-full shadow-xl md:rounded-2xl md:border md:border-gray-200 p-8">
           <div className="flex flex-col items-start justify-center w-2/3 border-r border-gray-300">
-            <div className="text-xl text-secondary text-center w-full">Select a studyboard</div>
-            <div className={`flex flex-row flex-wrap gap-4 p-2 my-4 items-start overflow-y-scroll max-h-[440px]`}>
+            <div className={`flex flex-row flex-wrap gap-4 p-2 items-start overflow-y-scroll max-h-[440px]`}>
               <StudyboardGallery studyboards={studyboards} sessionUserId={sessionUserId}/>
             </div>
           </div>
-          <div className={`flex flex-col items-center justify-start w-1/3`}>
+          {/* <div className={`flex flex-col items-center justify-start w-1/3`}>
             <div className="text-xl text-secondary">Create a new studyboard</div>
             <div className="my-4 p-2">
               <AddStudyboardTile variant="lg" studyboards={studyboards}/>
             </div>
-          </div>
+          </div> */}
       </div>
     </Modal>
   );

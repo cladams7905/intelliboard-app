@@ -28,6 +28,7 @@
     "next": "14.1.0",
     "next-auth": "^4.24.6",
     "next-nprogress-bar": "^2.3.5",
+    "next-transition-bar": "^1.1.1",
     "nextjs-current-url": "^1.0.3",
     "node-fetch": "^3.3.2",
     "radix-ui": "^1.0.1",

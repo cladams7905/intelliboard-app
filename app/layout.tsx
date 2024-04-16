@@ -7,6 +7,7 @@ import NavbarWapper from "@/components/layout/Navbar/NavbarWrapper";
 import "./globals.css";
 import { inter, righteous, atma } from "@/public/fonts";
 import cx from "classnames";
+import NextTransitionBar from 'next-transition-bar';
 
 export const metadata: Metadata = {
   title: "Studybird",
@@ -26,7 +27,9 @@ export default function RootLayout({
             <NavbarWapper/>
           </Suspense>
           <main className="flex w-full flex-col items-center justify-center">
-            {children} <Toaster />
+            <NextTransitionBar color="hsl(var(--secondary))" showSpinner={false}/>
+            {children} 
+            <Toaster />
             <Footer/>
           </main>
           <Analytics/>
