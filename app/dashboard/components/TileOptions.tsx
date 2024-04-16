@@ -10,8 +10,15 @@ import { useUrl } from 'nextjs-current-url';
 import { localStudyboard } from "@/types/customTypes";
 import LoadingDots from "@/components/shared/LoadingDots";
 
-export default function TileOptions({studyboard, renameTitle}: 
-  {studyboard: localStudyboard, renameTitle: React.RefObject<HTMLInputElement>}) {
+export default function TileOptions({
+  studyboard,
+  tileRef,
+  renameTitle
+}: {
+  studyboard: localStudyboard, 
+  tileRef: React.RefObject<HTMLDivElement>,
+  renameTitle: React.RefObject<HTMLInputElement>
+}) {
   
   const [openPopover, setOpenPopover] = useState(false);
   const { pathname } = useUrl() ?? {};
@@ -32,6 +39,7 @@ export default function TileOptions({studyboard, renameTitle}:
       router.push('/dashboard')
     }
     startDeleteTransition(() => {
+      tileRef.current?.classList.add("hidden");
       deleteStudyboardById(studyboard.id).then(() => {
         router.refresh();
       })

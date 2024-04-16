@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function GenContentPanel() {
   return (
-    <div className="w-1/5 border-r border-gray-200"
+    <div className="w-1/5 border-r border-gray-200 z-10"
         style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 0px'}}>
         <div className="flex flex-col flex-wrap gap-6 p-6 z-10">
             <label className="form-control w-full max-w-xs">

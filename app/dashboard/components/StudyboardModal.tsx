@@ -23,11 +23,11 @@ const StudyboardModal = ({
   sessionUserId: string;
 }) => {
   return (
-    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-4/5">
+    <Modal showModal={showStudyboardModal} setShowModal={setShowStudyboardModal} blur={false} width="w-2/3">
       <div className="flex flex-row w-full shadow-xl md:rounded-2xl md:border md:border-gray-200 p-8">
-          <div className="flex flex-col items-start justify-center w-2/3 border-r border-gray-300">
-            <div className={`flex flex-row flex-wrap gap-4 p-2 items-start overflow-y-scroll max-h-[440px]`}>
-              <StudyboardGallery studyboards={studyboards} sessionUserId={sessionUserId}/>
+          <div className="flex flex-col items-start justify-center">
+            <div className={`flex flex-row flex-wrap gap-4 p-2 items-start justify-center overflow-y-scroll max-h-[440px]`}>
+              <StudyboardGallery studyboards={studyboards} sessionUserId={sessionUserId} inModal={true}/>
             </div>
           </div>
           {/* <div className={`flex flex-col items-center justify-start w-1/3`}>

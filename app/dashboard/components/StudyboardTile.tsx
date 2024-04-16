@@ -12,6 +12,7 @@ import { localStudyboard } from "@/types/customTypes";
 export default function StudyboardTile({studyboard}: {studyboard: localStudyboard}) {
 
   const renameTitleRef = useRef<HTMLInputElement>(null);
+  const tileRef = useRef<HTMLDivElement>(null);
   const [snapshotUrl, setSnapshotUrl] = useState<string | null>(studyboard.snapshot_url);
   const [lastOpened, setLastOpened] = useState<string | null>(studyboard.last_opened);
   const [title, setTitle] = useState<string | null>(checkStringLength(studyboard.title))
@@ -49,8 +50,8 @@ export default function StudyboardTile({studyboard}: {studyboard: localStudyboar
   }, [submitTitle]);
 
   return (
-    <div className="card relative w-64 overflow-hidden bg-gray-100 shadow-md flex items-start justify-center border border-gray-200 rounded-sm hover:scale-105 hover:cursor-pointer transition-all">
-      <TileOptions studyboard={studyboard} renameTitle={renameTitleRef} />
+    <div ref={tileRef} className="card relative w-64 overflow-hidden bg-gray-100 shadow-md flex items-start justify-center border border-gray-200 rounded-sm hover:scale-105 hover:cursor-pointer transition-all">
+      <TileOptions studyboard={studyboard} tileRef={tileRef} renameTitle={renameTitleRef} />
       <div className="flex-col items-start max-w-64">
         <input type="text"
           className="absolute hidden text-md break-words mt-[158px] ml-[35px] bg-gray-200 focus:ring-1 focus:ring-gray-400 rounded-sm text-center"

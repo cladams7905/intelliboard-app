@@ -10,9 +10,11 @@ import LoadingDots from "@/components/shared/LoadingDots";
 
 const StudyboardGallery = ({
   studyboards,
+  inModal,
   sessionUserId,
 } : {
   studyboards : localStudyboard[],
+  inModal?: boolean,
   sessionUserId: string
 }) => {
 
@@ -35,8 +37,12 @@ const StudyboardGallery = ({
   return (
     <>
       <div className="flex flex-row items-baseline">
+        {inModal ? (
+          <div className="font-heading text-2xl text-primary">Select a Studyboard</div>
+        ) : (
           <div className="font-heading text-2xl text-primary">My Studyboards</div>
-          <AddStudyboardTile variant="sm" studyboards={studyboards} />
+        )}
+        <AddStudyboardTile variant="sm" studyboards={studyboards} />
           {isPending ? (
             <>
               <p className="text-secondary ml-12 font-heading">Refreshing </p>
