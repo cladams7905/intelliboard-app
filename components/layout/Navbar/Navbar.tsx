@@ -14,7 +14,7 @@ export default function Navbar({ session }: { session: Session | null }) {
   return (
     <>
       <SignInModal />
-      <div className="navbar bg-base-100 lg:px-8 z-10 border-b border-gray-200"
+      <div className="navbar relative z-30 bg-base-100 lg:px-8 border-b border-gray-200"
       style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 0px'}}>
       <div className="navbar-start">
         <div className="dropdown">

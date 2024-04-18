@@ -17,7 +17,7 @@ export default function Sidebar({
     const { StudyboardModal, setShowStudyboardModal } = useStudyboardModal(studyboards, sessionUserId);
 
     return ( 
-    <div className="hidden lg:block h-screen-custom-65 w-[60px] bg-primary px-3 py-10 z-10 border-r border-gray-200">
+    <div className="hidden lg:block h-screen-custom-65 w-[60px] bg-primary px-3 py-10 border-r border-gray-200 z-20">
         <StudyboardModal/>
         <Link href={'/dashboard'}>
             <Tooltip alignment="right" content="My dashboard">

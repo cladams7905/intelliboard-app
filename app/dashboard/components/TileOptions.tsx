@@ -39,8 +39,9 @@ export default function TileOptions({
       router.push('/dashboard')
     }
     startDeleteTransition(() => {
-      tileRef.current?.classList.add("hidden");
       deleteStudyboardById(studyboard.id).then(() => {
+        tileRef.current?.classList.add("hidden");
+        setOpenPopover(false)
         router.refresh();
       })
     })

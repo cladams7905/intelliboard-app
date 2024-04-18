@@ -25,11 +25,11 @@ export default async function EditPage({ params }: { params: { studyboardId: num
 	return (
 	<SidebarWrapper studyboards={studyboards} sessionUserId={sessionUserId}>
 		<GenContentPanel/>
-		<div className="w-11/12 h-screen-custom-150 bg-white mt-8">
+		<div className="h-screen-custom-150 bg-white w-full z-10">
 			<SnapshotComponent studyboard={currentStudyboard}>
-				<div className='flex flex-col align-center border border-gray-200 rounded-sm h-full w-full'>
+				<div className='flex flex-col align-center h-full'>
 					<BoardHeader studyboard={currentStudyboard}/>
-					<div className="overflow-y-hidden break-words mt-[75px] px-12 h-full w-full">
+					<div className="overflow-y-hidden break-words px-6 h-full">
 						<BoardContent studyboard={currentStudyboard}/>
 					</div>
 				</div>
